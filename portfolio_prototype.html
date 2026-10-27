@@ -312,15 +312,17 @@
     background:#000;
     min-height:420px;
   }
-  .featured-media img{
+  .featured-media .fm{
     position:absolute; inset:0;
     width:100%; height:100%;
     object-fit:contain;
-    opacity:0; transition:opacity .4s ease;
+    border:0;
+    opacity:0; visibility:hidden;
+    transition:opacity .4s ease, visibility .4s;
   }
-  .featured-media img.active{opacity:1;}
+  .featured-media .fm.active{opacity:1; visibility:visible;}
   .media-tabs{
-    position:absolute; left:14px; bottom:14px;
+    position:absolute; left:14px; top:14px;
     display:flex; gap:6px; z-index:2;
   }
   .media-tab{
@@ -444,6 +446,19 @@
     color:var(--text-soft);
     backdrop-filter:blur(8px);
   }
+  .card-award, .card-video{
+    position:absolute; top:12px; right:12px; z-index:1;
+    font-family:var(--font-mono); font-size:11px; font-weight:700;
+    padding:4px 10px; border-radius:999px;
+    color:#1A1203; background:var(--warm);
+    box-shadow:0 0 18px rgba(255,181,71,.35);
+  }
+  .card-video{
+    top:auto; bottom:12px; right:12px;
+    color:var(--text); background:rgba(7,9,13,.75);
+    border:1px solid var(--border-strong); box-shadow:none;
+    backdrop-filter:blur(8px);
+  }
   .card-body{padding:20px 22px 22px; display:flex; flex-direction:column; flex:1;}
   .card-body h3{font-size:21px; margin:0 0 2px; letter-spacing:-0.01em;}
   .card-body .card-sub{color:var(--text-soft); font-size:14.5px; margin:0 0 16px;}
@@ -528,6 +543,37 @@
     background:#05070A;
   }
   .modal-main img{width:100%; height:100%; object-fit:contain;}
+  .modal-main iframe{width:100%; height:100%; border:0; display:block;}
+  .thumb{position:relative;}
+  .thumb.is-video::after{
+    content:"▶";
+    position:absolute; inset:0;
+    display:grid; place-items:center;
+    color:#fff; font-size:16px;
+    background:rgba(0,0,0,.35);
+  }
+  .results{
+    display:grid; grid-template-columns:repeat(3, 1fr);
+    gap:8px; margin:18px 0 0;
+  }
+  .result{
+    border:1px solid var(--border);
+    background:var(--surface);
+    border-radius:12px;
+    padding:12px;
+  }
+  .result .r-num{font-size:22px; font-weight:700; color:var(--accent); line-height:1.1;}
+  .result .r-lbl{font-family:var(--font-mono); font-size:10.5px; color:var(--text-faint); margin-top:4px; line-height:1.4;}
+  .awards{list-style:none; padding:0; margin:18px 0 0; display:grid; gap:8px;}
+  .awards li{
+    display:flex; gap:10px; align-items:flex-start;
+    font-size:14px; color:var(--text);
+    border:1px solid rgba(255,181,71,.25);
+    background:rgba(255,181,71,.05);
+    border-radius:10px;
+    padding:9px 12px;
+  }
+  .awards li::before{content:"★"; color:var(--warm); flex:none;}
   .modal-thumbs{display:flex; gap:8px; margin-top:10px; flex-wrap:wrap;}
   .thumb{
     width:84px; aspect-ratio:4/3;
@@ -619,6 +665,16 @@
   .hobby .h-tag{font-family:var(--font-mono); font-size:12px; color:var(--warm); letter-spacing:.06em;}
   .hobby h3{font-size:22px; margin:8px 0 10px;}
   .hobby p{color:var(--text-soft); margin:0;}
+  .hike-card{
+    grid-column:1 / -1;
+    display:grid; grid-template-columns:1fr 1.2fr; gap:24px; align-items:center;
+    text-decoration:none; color:inherit;
+    transition:border-color .3s, transform .3s;
+  }
+  .hike-card:hover{border-color:var(--accent); transform:translateY(-3px);}
+  .hike-cta{display:inline-block; margin-top:14px; color:var(--accent); font-weight:600;}
+  .hike-ridge{width:100%; height:120px; display:block;}
+  @media (max-width:640px){ .hike-card{grid-template-columns:1fr;} }
 
   /* CONTACT */
   .contact{
@@ -714,8 +770,7 @@
         <a href="#contact" class="btn">Get in touch</a>
       </div>
       <div class="stats">
-        <div class="stat"><div class="num" data-count="5">0</div><div class="lbl">PROJECTS</div></div>
-        <div class="stat"><div class="num" data-count="2">0</div><div class="lbl">RESEARCH @ KMUTT</div></div>
+        <div class="stat"><div class="num" data-count="6">0</div><div class="lbl">PROJECTS</div></div>        <div class="stat"><div class="num" data-count="2">0</div><div class="lbl">RESEARCH @ KMUTT</div></div>
         <div class="stat"><div class="num">CV<span>+</span>HW</div><div class="lbl">AI MEETS HARDWARE</div></div>
       </div>
     </div>
@@ -845,6 +900,19 @@
           where I handle social media and promotional publications.
         </p>
       </div>
+      <a class="hobby hike-card reveal" href="hiking.html">
+        <div>
+          <div class="h-tag">EXPLORE</div>
+          <h3>Hiking</h3>
+          <p>7 summits across Thailand and China, from Doi Khun Tan to Huangshan.</p>
+          <span class="hike-cta">Walk the ridge →</span>
+        </div>
+        <svg class="hike-ridge" viewBox="0 0 300 100" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0 100 L0 78 L30 70 L52 52 L70 64 L96 40 L118 58 L150 14 L176 46 L198 34 L222 60 L246 50 L272 70 L300 66 L300 100 Z" fill="rgba(63,208,255,.10)"/>
+          <path d="M0 78 L30 70 L52 52 L70 64 L96 40 L118 58 L150 14 L176 46 L198 34 L222 60 L246 50 L272 70 L300 66" fill="none" stroke="var(--accent)" stroke-width="1.5" vector-effect="non-scaling-stroke"/>
+          <circle cx="150" cy="14" r="3" fill="var(--accent)"/>
+        </svg>
+      </a>
     </div>
   </section>
 
@@ -879,7 +947,7 @@
     <button class="modal-close" data-close aria-label="Close">×</button>
     <div class="modal-grid">
       <div class="modal-gallery">
-        <div class="modal-main"><img id="mImg" src="" alt=""></div>
+        <div class="modal-main" id="mMain"></div>
         <div class="modal-thumbs" id="mThumbs"></div>
         <div class="thumb-label" id="mImgLabel"></div>
       </div>
@@ -888,6 +956,8 @@
         <h3 id="mTitle"></h3>
         <div class="m-sub" id="mSub"></div>
         <div id="mDesc"></div>
+        <div id="mResults"></div>
+        <div id="mAwards"></div>
         <div class="tag-row" id="mTags" style="margin:18px 0 0"></div>
         <dl class="specs" id="mSpecs"></dl>
         <div id="mLink"></div>
@@ -915,6 +985,7 @@ var PROJECTS = [
     tags: ['AI / CV', 'Hardware'],
     images: [
       { src: 'images/edu1.jpg', label: 'Poster' },
+      { youtube: '2pwycMwPZ4w', label: 'Video' },
       { src: 'images/edu2.jpg', label: 'Computer Vision' }
     ],
     pipeline: ['Camera', 'MobileNetV2', 'Rotate + tilt sort', 'Voice / LED feedback'],
@@ -1017,6 +1088,45 @@ var PROJECTS = [
     ]
   },
   {
+    id: 'ion-detector',
+    title: 'Low-Cost Ion Detector',
+    subtitle: '2-in-1 apparatus for nitrate & phosphate detection in soil and water',
+    type: 'Team project · March 2024',
+    tags: ['Hardware', 'Research'],
+    badge: '2× Gold',
+    // { youtube: '<video id>' } shows a YouTube video; it is listed first so it opens first
+    images: [
+      { youtube: '5xWKFr7n5CI', label: 'Video' },
+      { src: 'images/agrisense1.jpg', label: 'Device' },
+      { src: 'images/agrisense2.jpg', label: 'More' }
+    ],
+    desc: [
+      'A portable device that measures nitrate and phosphate in soil and water using a colour-based (colorimetric) method. Normal test kits and lab tests are expensive, slow and manual; our device runs the test automatically and gives a result in about 2 minutes instead of about 2 days in a lab.',
+      'The device adds reagents to the sample, which changes colour (yellow for nitrate, blue for phosphate). An LED shines through the sample onto an RGB sensor, and the change in light is converted into an absorbance value, then a concentration, shown on a small screen.',
+      'I ran the colorimetric method in the lab to collect nitrate and phosphate data, built the calibration curves linking sensor readings to concentration (R² ≈ 0.99 against a spectrophotometer), and worked on the prototypes, from a first version with syringe problems, through a second that was too big, to the latest one.'
+    ],
+    results: [
+      ['~95%', 'accuracy vs. spectrophotometer'],
+      ['~2 min', 'per test, vs. ~2 days in a lab'],
+      ['31%', 'lower lifetime cost (US$17.22)']
+    ],
+    awards: [
+      'Gold Award, IDEX 2024, Singapore',
+      'Gold Medal, World Invention Competition and Exhibition (WICE) 2024, Malaysia',
+      'Accepted for publication in the Journal of Food Agricultural Sciences and Technology (FAST)'
+    ],
+    link: {
+      href: 'https://youtu.be/5xWKFr7n5CI',
+      text: 'Watch the video on YouTube'
+    },
+    specs: [
+      ['Project type', 'Team project'],
+      ['Goal', 'Fast, low-cost nitrate and phosphate testing for agriculture and the environment'],
+      ['My role', 'Lab data collection, regression / calibration curves and prototyping'],
+      ['Techniques', 'Colorimetry, LED + RGB sensor absorbance measurement, calibration curves, automated reagent dosing']
+    ]
+  },
+  {
     // TEMPLATE — fill this in for your next project, then delete `placeholder: true`
     id: 'project-7',
     placeholder: true,
@@ -1042,6 +1152,16 @@ var PROJECTS = [
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
   function chips(tags){ return tags.map(function(t){ return '<span class="chip accent">' + esc(t) + '</span>'; }).join(''); }
+  function ytEmbed(id){ return 'https://www.youtube-nocookie.com/embed/' + esc(id) + '?rel=0'; }
+  var YT_ATTRS = 'allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" ' +
+    'referrerpolicy="strict-origin-when-cross-origin" allowfullscreen';
+  function ytThumb(id){ return 'https://i.ytimg.com/vi/' + id + '/hqdefault.jpg'; }
+  function thumbSrc(m){ return m.youtube ? ytThumb(m.youtube) : m.src; }
+  // card cover: first real image, falling back to the video thumbnail
+  function coverSrc(p){
+    var img = p.images.filter(function(m){ return m.src; })[0];
+    return img ? img.src : thumbSrc(p.images[0]);
+  }
   var ARROW = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
 
   document.getElementById('year').textContent = new Date().getFullYear();
@@ -1053,7 +1173,10 @@ var PROJECTS = [
     f.innerHTML =
       '<div class="featured-media">' +
         featured.images.map(function(im, i){
-          return '<img src="' + im.src + '" alt="' + esc(featured.title + ' — ' + im.label) + '"' + (i === 0 ? ' class="active"' : '') + '>';
+          var cls = ' class="fm' + (i === 0 ? ' active' : '') + '"';
+          return im.youtube
+            ? '<iframe' + cls + ' src="' + ytEmbed(im.youtube) + '" title="' + esc(featured.title + ' — ' + im.label) + '" ' + YT_ATTRS + '></iframe>'
+            : '<img' + cls + ' src="' + im.src + '" alt="' + esc(featured.title + ' — ' + im.label) + '">';
         }).join('') +
         (featured.images.length > 1 ? '<div class="media-tabs">' + featured.images.map(function(im, i){
           return '<button class="media-tab' + (i === 0 ? ' active' : '') + '" data-i="' + i + '">' + esc(im.label) + '</button>';
@@ -1071,13 +1194,17 @@ var PROJECTS = [
         '<button class="btn primary" data-open="' + featured.id + '">See full breakdown ' + ARROW + '</button>' +
       '</div>';
 
-    var fImgs = f.querySelectorAll('.featured-media img');
+    var fImgs = f.querySelectorAll('.featured-media .fm');
     var fTabs = f.querySelectorAll('.media-tab');
     fTabs.forEach(function(tab){
       tab.addEventListener('click', function(){
         var i = +tab.getAttribute('data-i');
         fTabs.forEach(function(t, j){ t.classList.toggle('active', j === i); });
-        fImgs.forEach(function(im, j){ im.classList.toggle('active', j === i); });
+        fImgs.forEach(function(im, j){
+          // reload a video when leaving it so it stops playing
+          if (im.tagName === 'IFRAME' && j !== i && im.classList.contains('active')) im.src = im.src;
+          im.classList.toggle('active', j === i);
+        });
       });
     });
   }
@@ -1105,7 +1232,9 @@ var PROJECTS = [
     }
     return '<button class="card reveal' + (p.featured ? ' is-featured hide' : '') + '" data-open="' + p.id + '" data-tags="' + esc(p.tags.join('|')) + '">' +
       '<div class="card-media"><span class="card-type">' + esc(p.type) + '</span>' +
-        '<img src="' + p.images[0].src + '" alt="' + esc(p.title) + '" loading="lazy"></div>' +
+        (p.badge ? '<span class="card-award">★ ' + esc(p.badge) + '</span>' : '') +
+        (p.images.some(function(m){ return m.youtube; }) ? '<span class="card-video">▶ Video</span>' : '') +
+        '<img src="' + coverSrc(p) + '" alt="' + esc(p.title) + '" loading="lazy"></div>' +
       '<div class="card-body">' +
         '<h3>' + esc(p.title) + '</h3>' +
         '<p class="card-sub">' + esc(p.subtitle) + '</p>' +
@@ -1130,14 +1259,16 @@ var PROJECTS = [
 
   /* ---- Modal ---- */
   var modal = document.getElementById('modal');
-  var mImg = document.getElementById('mImg');
+  var mMain = document.getElementById('mMain');
   var mThumbs = document.getElementById('mThumbs');
   var mImgLabel = document.getElementById('mImgLabel');
   var lastFocus = null;
 
   function showImage(p, i){
-    mImg.src = p.images[i].src;
-    mImg.alt = p.title + ' — ' + p.images[i].label;
+    var m = p.images[i];
+    mMain.innerHTML = m.youtube
+      ? '<iframe src="' + ytEmbed(m.youtube) + '" title="' + esc(p.title + ' — ' + m.label) + '" ' + YT_ATTRS + '></iframe>'
+      : '<img src="' + m.src + '" alt="' + esc(p.title + ' — ' + m.label) + '">';
     mImgLabel.textContent = p.images.length > 1 ? (i + 1) + ' / ' + p.images.length + ' — ' + p.images[i].label : p.images[i].label;
     mThumbs.querySelectorAll('.thumb').forEach(function(t, j){ t.classList.toggle('active', j === i); });
   }
@@ -1150,6 +1281,14 @@ var PROJECTS = [
     document.getElementById('mTitle').textContent = p.title;
     document.getElementById('mSub').textContent = p.subtitle;
     document.getElementById('mDesc').innerHTML = p.desc.map(function(d){ return '<p>' + esc(d) + '</p>'; }).join('');
+    document.getElementById('mResults').innerHTML = p.results
+      ? '<div class="results">' + p.results.map(function(r){
+          return '<div class="result"><div class="r-num">' + esc(r[0]) + '</div><div class="r-lbl">' + esc(r[1]) + '</div></div>';
+        }).join('') + '</div>'
+      : '';
+    document.getElementById('mAwards').innerHTML = p.awards
+      ? '<ul class="awards">' + p.awards.map(function(a){ return '<li>' + esc(a) + '</li>'; }).join('') + '</ul>'
+      : '';
     document.getElementById('mTags').innerHTML = chips(p.tags);
     document.getElementById('mSpecs').innerHTML = p.specs.map(function(s){
       return '<div class="spec"><dt>' + esc(s[0].toUpperCase()) + '</dt><dd>' + esc(s[1]) + '</dd></div>';
@@ -1158,7 +1297,7 @@ var PROJECTS = [
       ? '<a class="m-link" href="' + esc(p.link.href) + '" target="_blank" rel="noopener noreferrer">' + esc(p.link.text) + ' ' + ARROW + '</a>'
       : '';
     mThumbs.innerHTML = p.images.length > 1 ? p.images.map(function(im, i){
-      return '<button class="thumb" data-i="' + i + '" aria-label="' + esc(im.label) + '"><img src="' + im.src + '" alt=""></button>';
+      return '<button class="thumb' + (im.youtube ? ' is-video' : '') + '" data-i="' + i + '" aria-label="' + esc(im.label) + '"><img src="' + thumbSrc(im) + '" alt=""></button>';
     }).join('') : '';
     mThumbs.onclick = function(e){
       var t = e.target.closest('.thumb');
@@ -1174,6 +1313,7 @@ var PROJECTS = [
   function closeModal(){
     modal.classList.remove('open');
     modal.setAttribute('aria-hidden', 'true');
+    mMain.innerHTML = '';   // stops any playing video
     document.body.style.overflow = '';
     if (lastFocus) lastFocus.focus();
   }

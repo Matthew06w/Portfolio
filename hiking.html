@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Matthew Hema — Summits</title>
+<meta name="description" content="The mountains I've hiked across Thailand and China.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#07090D;
+    --bg-2:#0D1118;
+    --surface:#121823;
+    --border:#232C3B;
+    --border-strong:#33405A;
+    --text:#E8EDF5;
+    --text-soft:#9AA6B8;
+    --text-faint:#5E6B7E;
+    --accent:#3FD0FF;
+    --accent-glow:rgba(63,208,255,0.35);
+    --warm:#FFB547;
+
+    /* sky + ridge colours (night) — swapped by .sunrise */
+    --sky-top:#05070D;
+    --sky-mid:#0B1222;
+    --sky-bot:#16233D;
+    --range-far:#121B2C;
+    --range-mid:#0E1624;
+    --ridge-top:#1A2638;
+    --ridge-bot:#07090D;
+    --ridge-line:#3FD0FF;
+    --orb:#E9F1FF;
+    --orb-glow:rgba(200,220,255,.35);
+
+    --font-head:'Space Grotesk', system-ui, sans-serif;
+    --font-mono:'JetBrains Mono', ui-monospace, monospace;
+  }
+  body.sunrise{
+    --sky-top:#1B1636;
+    --sky-mid:#6B3F63;
+    --sky-bot:#F08A5D;
+    --range-far:#5A3A5E;
+    --range-mid:#3B2846;
+    --ridge-top:#2A1E36;
+    --ridge-bot:#0B0A12;
+    --ridge-line:#FFB547;
+    --orb:#FFD27A;
+    --orb-glow:rgba(255,190,90,.55);
+    --accent:#FFB547;
+    --accent-glow:rgba(255,181,71,.35);
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--font-head);
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+  img{max-width:100%; display:block;}
+  ::selection{background:var(--accent); color:var(--bg);}
+  .wrap{max-width:1160px; margin:0 auto; padding:0 24px;}
+
+  /* NAV */
+  .nav{
+    position:fixed; top:0; left:0; right:0; z-index:40;
+    display:flex; justify-content:space-between; align-items:center;
+    padding:18px 24px;
+    pointer-events:none;
+  }
+  .nav > *{pointer-events:auto;}
+  .back{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:14px; text-decoration:none; color:var(--text);
+    padding:9px 16px; border-radius:999px;
+    background:rgba(7,9,13,.55); border:1px solid var(--border-strong);
+    backdrop-filter:blur(10px);
+  }
+  .back:hover{border-color:var(--accent);}
+  .sky-toggle{
+    display:flex; gap:2px; padding:3px;
+    border-radius:999px;
+    background:rgba(7,9,13,.55); border:1px solid var(--border-strong);
+    backdrop-filter:blur(10px);
+  }
+  .sky-toggle button{
+    font-family:var(--font-mono); font-size:12px;
+    border:0; border-radius:999px;
+    padding:6px 12px;
+    background:transparent; color:var(--text-soft);
+    cursor:pointer;
+  }
+  .sky-toggle button.active{background:var(--accent); color:#0A0D12;}
+
+  /* HERO / RIDGE SCENE */
+  .scene{
+    position:relative;
+    min-height:100vh;
+    display:flex; flex-direction:column;
+    background:linear-gradient(180deg, var(--sky-top) 0%, var(--sky-mid) 55%, var(--sky-bot) 100%);
+    transition:background .8s ease;
+    overflow:hidden;
+  }
+  .scene-head{
+    position:relative; z-index:2;
+    text-align:center;
+    padding:96px 24px 0;
+  }
+  .kicker{font-family:var(--font-mono); font-size:12.5px; color:var(--accent); letter-spacing:.1em;}
+  h1{
+    font-size:clamp(40px, 7vw, 80px);
+    line-height:1; letter-spacing:-0.03em;
+    margin:12px 0 12px;
+  }
+  .scene-head p{color:var(--text-soft); margin:0 auto; max-width:52ch;}
+  .hint{
+    display:inline-flex; align-items:center; gap:8px;
+    margin-top:18px;
+    font-family:var(--font-mono); font-size:12px; color:var(--text-faint);
+  }
+  .hint .dot{width:8px; height:8px; border-radius:50%; background:var(--accent); box-shadow:0 0 10px var(--accent);}
+
+  .ridge-scroll{
+    position:relative; z-index:1;
+    flex:1;
+    display:flex; align-items:flex-end;
+    overflow-x:auto; overflow-y:hidden;
+    scrollbar-width:none;
+  }
+  .ridge-scroll::-webkit-scrollbar{display:none;}
+  #ridge{
+    display:block;
+    width:100%;
+    min-width:980px;
+    height:auto;
+  }
+
+  /* SVG pieces */
+  .star{fill:#fff; animation:twinkle 3s ease-in-out infinite;}
+  @keyframes twinkle{0%,100%{opacity:.2;} 50%{opacity:.9;}}
+  body.sunrise .star{opacity:0 !important; animation:none;}
+  .orb{fill:var(--orb); filter:drop-shadow(0 0 30px var(--orb-glow)); transition:all 1s ease;}
+  .range{transition:transform .25s ease-out;}
+  .ridge-line{
+    fill:none; stroke:var(--ridge-line); stroke-width:2;
+    filter:drop-shadow(0 0 6px var(--accent-glow));
+    stroke-linejoin:round;
+  }
+  .axis text{font-family:var(--font-mono); font-size:11px; fill:var(--text-faint);}
+  .axis line{stroke:var(--border-strong); stroke-dasharray:2 5;}
+  .alt-guide{stroke:var(--accent); stroke-dasharray:4 4; opacity:0; transition:opacity .2s;}
+  .alt-tag{opacity:0; transition:opacity .2s;}
+  .alt-tag rect{fill:var(--accent);}
+  .alt-tag text{font-family:var(--font-mono); font-size:11px; font-weight:700; fill:#0A0D12;}
+
+  .peak{cursor:pointer; outline:none; opacity:0; transition:opacity .6s ease;}
+  .peak.show{opacity:1;}
+  .peak .stem{stroke:var(--text-soft); stroke-width:1.2;}
+  .peak .pin{fill:var(--bg); stroke:var(--accent); stroke-width:2.5; transition:r .2s;}
+  .peak .pin-pulse{fill:none; stroke:var(--accent); stroke-width:1.5; opacity:0;}
+  .peak .flag-box{
+    fill:rgba(7,9,13,.72); stroke:var(--border-strong);
+    transition:fill .2s, stroke .2s;
+  }
+  .peak .flag-name{font-family:var(--font-head); font-weight:600; font-size:14px; fill:var(--text);}
+  .peak .flag-h{font-family:var(--font-mono); font-size:11.5px; fill:var(--accent);}
+  .peak .flag{transition:transform .25s ease;}
+  .peak:hover .flag, .peak:focus-visible .flag{transform:translateY(-6px);}
+  .peak:hover .flag-box, .peak:focus-visible .flag-box{fill:var(--accent); stroke:var(--accent);}
+  .peak:hover .flag-name, .peak:focus-visible .flag-name,
+  .peak:hover .flag-h, .peak:focus-visible .flag-h{fill:#0A0D12;}
+  .peak:hover .pin, .peak:focus-visible .pin{fill:var(--accent);}
+  .peak.show .pin-pulse{animation:ping 2.4s ease-out infinite;}
+  @keyframes ping{0%{r:6; opacity:.8;} 100%{r:22; opacity:0;}}
+
+  /* STATS */
+  .stats{
+    display:grid; grid-template-columns:repeat(4, 1fr);
+    border:1px solid var(--border);
+    border-radius:18px;
+    background:var(--bg-2);
+    margin:-1px auto 0;
+    overflow:hidden;
+  }
+  .stat{padding:22px 24px; border-left:1px solid var(--border);}
+  .stat:first-child{border-left:none;}
+  .stat .num{font-size:30px; font-weight:700; line-height:1;}
+  .stat .num small{font-size:15px; color:var(--text-soft); font-weight:500;}
+  .stat .lbl{font-family:var(--font-mono); font-size:11px; color:var(--text-faint); letter-spacing:.06em; margin-top:8px;}
+
+  /* LOGBOOK */
+  section{padding:88px 0;}
+  .sec-kicker{font-family:var(--font-mono); font-size:12.5px; color:var(--accent); letter-spacing:.08em;}
+  .sec-title{font-size:clamp(30px, 5vw, 46px); letter-spacing:-0.02em; line-height:1.05; margin:10px 0 12px;}
+  .sec-sub{color:var(--text-soft); margin:0 0 36px; max-width:60ch;}
+  .log-filters{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:24px;}
+  .log-filter{
+    font-family:var(--font-head); font-size:14px; font-weight:500;
+    padding:8px 16px; border-radius:999px;
+    border:1px solid var(--border); background:var(--bg-2); color:var(--text-soft);
+    cursor:pointer;
+  }
+  .log-filter.active{background:var(--text); color:#0A0D12; border-color:var(--text);}
+  .log-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(250px, 1fr)); gap:18px;}
+  .log-card{
+    font:inherit; color:inherit; text-align:left;
+    border:1px solid var(--border); border-radius:16px;
+    background:var(--surface);
+    padding:0; overflow:hidden; cursor:pointer;
+    display:flex; flex-direction:column;
+    transition:transform .3s, border-color .3s;
+  }
+  .log-card:hover, .log-card:focus-visible{transform:translateY(-5px); border-color:var(--accent); outline:none;}
+  .log-card.hide{display:none;}
+  .log-media{
+    position:relative; aspect-ratio:4/3; overflow:hidden;
+    background:linear-gradient(180deg, var(--sky-mid), var(--sky-bot));
+  }
+  .log-media img{width:100%; height:100%; object-fit:cover; transition:transform .5s;}
+  .log-card:hover .log-media img{transform:scale(1.06);}
+  .log-media svg{position:absolute; inset:auto 0 0 0; width:100%; height:70%;}
+  .log-flag{
+    position:absolute; top:10px; left:10px;
+    font-family:var(--font-mono); font-size:11px;
+    padding:3px 9px; border-radius:999px;
+    background:rgba(7,9,13,.7); border:1px solid var(--border-strong); color:var(--text-soft);
+    backdrop-filter:blur(6px);
+  }
+  .log-body{padding:16px 18px 18px;}
+  .log-body h3{margin:0; font-size:19px;}
+  .log-meta{display:flex; justify-content:space-between; gap:10px; margin-top:4px; font-family:var(--font-mono); font-size:12px; color:var(--text-faint);}
+  .log-meta .h{color:var(--accent);}
+
+  /* MODAL */
+  .modal{position:fixed; inset:0; z-index:100; display:none; align-items:center; justify-content:center; padding:24px;}
+  .modal.open{display:flex;}
+  .modal-backdrop{position:absolute; inset:0; background:rgba(3,5,8,.8); backdrop-filter:blur(6px); animation:fade .25s ease;}
+  .modal-panel{
+    position:relative; width:min(1000px, 100%); max-height:calc(100vh - 48px); overflow:auto;
+    background:var(--bg-2); border:1px solid var(--border-strong); border-radius:22px;
+    box-shadow:0 40px 120px rgba(0,0,0,.6);
+    animation:pop .3s cubic-bezier(.2,.9,.3,1.2);
+  }
+  @keyframes fade{from{opacity:0;}}
+  @keyframes pop{from{opacity:0; transform:translateY(20px) scale(.97);}}
+  .modal-close{
+    position:absolute; top:14px; right:14px; z-index:3;
+    width:40px; height:40px; border-radius:50%;
+    border:1px solid var(--border-strong); background:rgba(7,9,13,.8);
+    color:var(--text); font-size:20px; cursor:pointer;
+  }
+  .modal-close:hover{border-color:var(--accent); color:var(--accent);}
+  .modal-grid{display:grid; grid-template-columns:1.2fr 1fr;}
+  .gallery{padding:16px; background:#000; border-radius:22px 0 0 22px;}
+  .g-main{
+    position:relative; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+    background:linear-gradient(180deg, var(--sky-mid), var(--sky-bot));
+  }
+  .g-main img{width:100%; height:100%; object-fit:contain; background:#05070A;}
+  .g-empty{
+    position:absolute; inset:0; display:grid; place-items:center; text-align:center;
+    font-family:var(--font-mono); font-size:12px; color:var(--text-soft);
+  }
+  .g-empty svg{position:absolute; inset:auto 0 0 0; width:100%; height:65%;}
+  .g-empty span{position:relative; z-index:1; background:rgba(7,9,13,.6); padding:6px 12px; border-radius:999px;}
+  .g-nav{
+    position:absolute; top:50%; transform:translateY(-50%);
+    width:38px; height:38px; border-radius:50%;
+    border:1px solid var(--border-strong); background:rgba(7,9,13,.7);
+    color:var(--text); cursor:pointer; font-size:16px;
+  }
+  .g-nav.prev{left:10px;} .g-nav.next{right:10px;}
+  .g-thumbs{display:flex; gap:8px; margin-top:10px; flex-wrap:wrap;}
+  .g-thumb{width:72px; aspect-ratio:4/3; border-radius:8px; overflow:hidden; border:2px solid transparent; padding:0; background:#05070A; cursor:pointer; opacity:.55;}
+  .g-thumb img{width:100%; height:100%; object-fit:cover;}
+  .g-thumb.active, .g-thumb:hover{opacity:1; border-color:var(--accent);}
+  .info{padding:34px 32px;}
+  .info .where{font-family:var(--font-mono); font-size:12px; color:var(--warm);}
+  .info h2{font-size:clamp(28px, 4vw, 38px); line-height:1.05; letter-spacing:-0.02em; margin:10px 0 18px;}
+  .facts{display:grid; grid-template-columns:repeat(3, 1fr); gap:8px; margin-bottom:22px;}
+  .fact{border:1px solid var(--border); background:var(--surface); border-radius:12px; padding:10px 12px;}
+  .fact .v{font-weight:700; font-size:17px; line-height:1.2;}
+  .fact .k{font-family:var(--font-mono); font-size:10.5px; color:var(--text-faint); margin-top:3px; letter-spacing:.05em;}
+  .info p{color:var(--text-soft); margin:0 0 12px;}
+  .peak-nav{display:flex; justify-content:space-between; gap:8px; margin-top:24px; padding-top:18px; border-top:1px solid var(--border);}
+  .peak-nav button{
+    font:inherit; font-size:13px; color:var(--text-soft);
+    background:transparent; border:1px solid var(--border); border-radius:999px;
+    padding:7px 14px; cursor:pointer;
+  }
+  .peak-nav button:hover{color:var(--text); border-color:var(--accent);}
+
+  footer{
+    padding:32px 0 44px; border-top:1px solid var(--border);
+    display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap;
+    font-family:var(--font-mono); font-size:12px; color:var(--text-faint);
+  }
+  footer a{color:var(--text-soft);}
+
+  @media (max-width:860px){
+    .stats{grid-template-columns:repeat(2, 1fr);}
+    .stat:nth-child(3){border-left:none;}
+    .stat:nth-child(n+3){border-top:1px solid var(--border);}
+    .modal-grid{grid-template-columns:1fr;}
+    .gallery{border-radius:22px 22px 0 0;}
+  }
+  @media (max-width:640px){
+    .wrap{padding:0 16px;}
+    .nav{padding:14px 16px;}
+    .scene-head{padding-top:84px;}
+    .modal{padding:0;}
+    .modal-panel{max-height:100vh; height:100%; border-radius:0;}
+    .gallery{border-radius:0;}
+    .info{padding:24px 20px;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *, *::before, *::after{animation:none !important; transition:none !important;}
+    html{scroll-behavior:auto;}
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="back" href="portfolio_prototype.html#about">← Portfolio</a>
+  <div class="sky-toggle" role="group" aria-label="Sky">
+    <button class="active" data-sky="night">☾ Night</button>
+    <button data-sky="sunrise">☀ Sunrise</button>
+  </div>
+</nav>
+
+<header class="scene" id="scene">
+  <div class="scene-head">
+    <div class="kicker">// SUMMIT LOG</div>
+    <h1>Peaks I've stood on</h1>
+    <p>Trails across Thailand and China, drawn to scale. Every flag is a summit.</p>
+    <div class="hint"><span class="dot"></span>Click a peak to open the trip</div>
+  </div>
+  <div class="ridge-scroll" id="ridgeScroll">
+    <svg id="ridge" viewBox="0 0 1400 640" preserveAspectRatio="xMidYMax meet" role="img" aria-label="Mountain ridge of summits hiked"></svg>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="stats" id="stats"></div>
+
+  <section id="log">
+    <div class="sec-kicker">// LOGBOOK</div>
+    <h2 class="sec-title">Every trail, one place</h2>
+    <p class="sec-sub">The same peaks as the ridge, as a list. Tap any card for photos and the story.</p>
+    <div class="log-filters" id="logFilters"></div>
+    <div class="log-grid" id="logGrid"></div>
+  </section>
+
+  <footer>
+    <span>© <span id="year"></span> Matthew Hema</span>
+    <a href="portfolio_prototype.html">Back to portfolio →</a>
+  </footer>
+</main>
+
+<div class="modal" id="modal" aria-hidden="true">
+  <div class="modal-backdrop" data-close></div>
+  <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="mName">
+    <button class="modal-close" data-close aria-label="Close">×</button>
+    <div class="modal-grid">
+      <div class="gallery">
+        <div class="g-main" id="gMain"></div>
+        <div class="g-thumbs" id="gThumbs"></div>
+      </div>
+      <div class="info">
+        <div class="where" id="mWhere"></div>
+        <h2 id="mName"></h2>
+        <div class="facts" id="mFacts"></div>
+        <div id="mStory"></div>
+        <div class="peak-nav">
+          <button id="mPrev">← Previous peak</button>
+          <button id="mNext">Next peak →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* =========================================================
+   HIKES — edit this list to add photos, dates and stories.
+   - height: metres above sea level
+   - approx: true shows "≈" before the height (set false once checked)
+   - photos: e.g. ['images/hiking/huangshan-1.jpg', 'images/hiking/huangshan-2.jpg']
+   The ridge puts the tallest peak in the middle automatically.
+   ========================================================= */
+var HIKES = [
+  {
+    id: 'doi-khun-tan',
+    name: 'Doi Khun Tan',
+    region: 'Near Chiang Mai',
+    country: 'Thailand',
+    height: 1373,
+    date: '[Month Year]',
+    photos: [],
+    story: ['[A few lines about this hike: the trail, the view, who you went with.]']
+  },
+  {
+    id: 'khao-hua-muak',
+    name: 'Khao Hua Muak',
+    region: '[Province]',
+    country: 'Thailand',
+    height: 300, approx: true,
+    date: '[Month Year]',
+    photos: [],
+    story: ['[A few lines about this hike.]']
+  },
+  {
+    id: 'khao-lom-muak',
+    name: 'Khao Lom Muak',
+    region: 'Prachuap Khiri Khan',
+    country: 'Thailand',
+    height: 250, approx: true,
+    date: '[Month Year]',
+    photos: [],
+    story: ['[A few lines about this hike.]']
+  },
+  {
+    id: 'khao-noh',
+    name: 'Khao Noh',
+    region: 'Nakhon Sawan',
+    country: 'Thailand',
+    height: 330, approx: true,
+    date: '[Month Year]',
+    photos: [],
+    story: ['[A few lines about this hike.]']
+  },
+  {
+    id: 'wulong-karst',
+    name: 'Wulong Karst',
+    region: 'Chongqing',
+    country: 'China',
+    kind: 'Karst landscape',
+    height: 1200, approx: true,
+    date: '[Month Year]',
+    photos: [],
+    story: ['[A few lines about this hike.]']
+  },
+  {
+    id: 'wushaoshan',
+    name: 'Wushaoshan',
+    region: 'Hangzhou',
+    country: 'China',
+    height: 494, approx: true,
+    date: '[Month Year]',
+    photos: [],
+    story: ['[A few lines about this hike.]']
+  },
+  {
+    id: 'huangshan',
+    name: 'Huangshan',
+    region: 'Anhui',
+    country: 'China',
+    kind: 'Lotus Peak summit',
+    height: 1864,
+    date: '[Month Year]',
+    photos: [],
+    story: ['[A few lines about this hike.]']
+  }
+];
+
+(function(){
+  "use strict";
+
+  var NS = 'http://www.w3.org/2000/svg';
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var svg = document.getElementById('ridge');
+  var W = 1400, H = 640, BASE = 610, SEA = 560;   // SEA = y of 0 m
+  var maxH = Math.max.apply(null, HIKES.map(function(h){ return h.height; }));
+  var K = 400 / Math.max(maxH, 1);                // px per metre
+  function yOf(m){ return SEA - m * K; }
+
+  function el(name, attrs, parent){
+    var e = document.createElementNS(NS, name);
+    for (var k in attrs) e.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(e);
+    return e;
+  }
+  function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function fmtH(h){ return (h.approx ? '≈ ' : '') + h.height.toLocaleString('en-US') + ' m'; }
+
+  // deterministic randomness so the ridge looks the same on every load
+  function rng(seed){
+    return function(){
+      seed |= 0; seed = seed + 0x6D2B79F5 | 0;
+      var t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+      t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+      return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    };
+  }
+
+  /* ---- Arrange: tallest in the middle, then alternate left / right ---- */
+  var sorted = HIKES.slice().sort(function(a, b){ return b.height - a.height; });
+  var n = sorted.length;
+  var order = new Array(n);
+  var mid = Math.floor((n - 1) / 2);
+  sorted.forEach(function(h, i){
+    var offset = Math.ceil(i / 2) * (i % 2 ? -1 : 1);
+    order[mid + offset] = h;
+  });
+  order = order.filter(Boolean);
+  var PAD = 130;
+  order.forEach(function(h, i){
+    h._x = n === 1 ? W / 2 : PAD + i * (W - 2 * PAD) / (n - 1);
+    h._y = yOf(h.height);
+  });
+
+  /* ---- Defs: gradients ---- */
+  var defs = el('defs', {}, svg);
+  var g1 = el('linearGradient', {id:'ridgeFill', x1:0, y1:0, x2:0, y2:1}, defs);
+  el('stop', {offset:'0%', style:'stop-color:var(--ridge-top)'}, g1);
+  el('stop', {offset:'100%', style:'stop-color:var(--ridge-bot)'}, g1);
+
+  /* ---- Sky: stars + moon/sun ---- */
+  var sky = el('g', {}, svg);
+  var r = rng(7);
+  for (var s = 0; s < 90; s++){
+    var st = el('circle', {class:'star', cx:(r() * W).toFixed(1), cy:(r() * 330).toFixed(1), r:(r() * 1.3 + .3).toFixed(2)}, sky);
+    st.style.animationDelay = (r() * 3).toFixed(2) + 's';
+  }
+  var orb = el('circle', {class:'orb', cx:1180, cy:120, r:34}, sky);
+
+  /* ---- Distant ranges (parallax) ---- */
+  function rangePath(seed, count, minM, maxM){
+    var rr = rng(seed), d = 'M -60 ' + BASE;
+    for (var i = 0; i <= count; i++){
+      var x = -60 + i * (W + 120) / count;
+      var y = yOf(minM + rr() * (maxM - minM));
+      d += ' L ' + x.toFixed(1) + ' ' + y.toFixed(1);
+    }
+    return d + ' L ' + (W + 60) + ' ' + H + ' L -60 ' + H + ' Z';
+  }
+  var far = el('path', {class:'range', d:rangePath(3, 22, maxH * .35, maxH * .75), style:'fill:var(--range-far)'}, svg);
+  var midR = el('path', {class:'range', d:rangePath(11, 16, maxH * .2, maxH * .5), style:'fill:var(--range-mid)'}, svg);
+
+  /* ---- Altitude axis ---- */
+  var axis = el('g', {class:'axis'}, svg);
+  var step = maxH > 1500 ? 500 : 250;
+  for (var m = 0; m <= maxH + step / 2; m += step){
+    el('line', {x1:70, x2:W - 20, y1:yOf(m), y2:yOf(m)}, axis);
+    var t = el('text', {x:62, y:yOf(m) + 4, 'text-anchor':'end'}, axis);
+    t.textContent = m === 0 ? 'sea lvl' : m.toLocaleString('en-US') + ' m';
+  }
+
+  /* ---- Main ridge through the peaks ---- */
+  var anchors = [{x:-20, y:yOf(order[0].height * .3)}];
+  order.forEach(function(h, i){
+    anchors.push({x:h._x, y:h._y, peak:true});
+    if (i < n - 1){
+      var nx = order[i + 1];
+      anchors.push({x:(h._x + nx._x) / 2, y:yOf(Math.min(h.height, nx.height) * .38)});
+    }
+  });
+  anchors.push({x:W + 20, y:yOf(order[n - 1].height * .3)});
+
+  var rr2 = rng(42), pts = [anchors[0]];
+  for (var a = 0; a < anchors.length - 1; a++){
+    var p0 = anchors[a], p1 = anchors[a + 1], seg = 9;
+    var amp = Math.hypot(p1.x - p0.x, p1.y - p0.y) * 0.035;
+    for (var k = 1; k <= seg; k++){
+      var tt = k / seg;
+      var jitter = k === seg ? 0 : (rr2() - .5) * 2 * amp * Math.sin(Math.PI * tt);
+      pts.push({x:p0.x + (p1.x - p0.x) * tt, y:p0.y + (p1.y - p0.y) * tt + jitter});
+    }
+  }
+  var lineD = pts.map(function(p, i){ return (i ? 'L ' : 'M ') + p.x.toFixed(1) + ' ' + p.y.toFixed(1); }).join(' ');
+  el('path', {d:lineD + ' L ' + (W + 20) + ' ' + H + ' L -20 ' + H + ' Z', fill:'url(#ridgeFill)'}, svg);
+  var ridgeLine = el('path', {class:'ridge-line', d:lineD}, svg);
+
+  /* ---- Hover altitude guide ---- */
+  var guide = el('line', {class:'alt-guide', x1:70, x2:70, y1:0, y2:0}, svg);
+  var tag = el('g', {class:'alt-tag'}, svg);
+  var tagRect = el('rect', {x:0, y:-11, width:64, height:20, rx:4}, tag);
+  var tagText = el('text', {x:6, y:4}, tag);
+
+  /* ---- Peak flags ---- */
+  var peaks = el('g', {}, svg);
+  order.forEach(function(h, i){
+    var g = el('g', {class:'peak', tabindex:0, role:'button', 'aria-label':h.name + ', ' + fmtH(h)}, peaks);
+    g.dataset.id = h.id;
+    el('circle', {class:'pin-pulse', cx:h._x, cy:h._y, r:6}, g);
+    el('line', {class:'stem', x1:h._x, x2:h._x, y1:h._y - 6, y2:h._y - 34}, g);
+    var flag = el('g', {class:'flag'}, g);
+    var box = el('rect', {class:'flag-box', y:h._y - 80, height:46, rx:9}, flag);
+    var name = el('text', {class:'flag-name', x:h._x, y:h._y - 61, 'text-anchor':'middle'}, flag);
+    name.textContent = h.name;
+    var ht = el('text', {class:'flag-h', x:h._x, y:h._y - 44, 'text-anchor':'middle'}, flag);
+    ht.textContent = fmtH(h);
+    el('circle', {class:'pin', cx:h._x, cy:h._y, r:6}, g);
+    var w = Math.max(name.getComputedTextLength ? name.getComputedTextLength() : 100, 70) + 24;
+    box.setAttribute('x', h._x - w / 2);
+    box.setAttribute('width', w);
+
+    function showGuide(){
+      guide.setAttribute('y1', h._y); guide.setAttribute('y2', h._y);
+      guide.setAttribute('x2', h._x);
+      guide.style.opacity = 1;
+      tagText.textContent = h.height.toLocaleString('en-US') + ' m';
+      tagRect.setAttribute('width', tagText.getComputedTextLength() + 12);
+      tag.setAttribute('transform', 'translate(8,' + h._y + ')');
+      tag.style.opacity = 1;
+    }
+    function hideGuide(){ guide.style.opacity = 0; tag.style.opacity = 0; }
+    g.addEventListener('mouseenter', showGuide);
+    g.addEventListener('focus', showGuide);
+    g.addEventListener('mouseleave', hideGuide);
+    g.addEventListener('blur', hideGuide);
+    g.addEventListener('click', function(){ openPeak(h.id); });
+    g.addEventListener('keydown', function(e){ if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); openPeak(h.id); } });
+  });
+
+  /* ---- Draw-on animation ---- */
+  var peakEls = peaks.querySelectorAll('.peak');
+  if (reduceMotion){
+    peakEls.forEach(function(p){ p.classList.add('show'); });
+  } else {
+    var len = ridgeLine.getTotalLength();
+    ridgeLine.style.strokeDasharray = len;
+    ridgeLine.style.strokeDashoffset = len;
+    ridgeLine.getBoundingClientRect();
+    ridgeLine.style.transition = 'stroke-dashoffset 2.6s ease-in-out';
+    ridgeLine.style.strokeDashoffset = 0;
+    peakEls.forEach(function(p, i){ setTimeout(function(){ p.classList.add('show'); }, 900 + i * 220); });
+  }
+
+  /* ---- Parallax on the distant ranges ---- */
+  if (!reduceMotion){
+    document.getElementById('scene').addEventListener('mousemove', function(e){
+      var dx = (e.clientX / innerWidth - .5);
+      far.style.transform = 'translateX(' + (dx * -18) + 'px)';
+      midR.style.transform = 'translateX(' + (dx * -34) + 'px)';
+      orb.style.transform = 'translate(' + (dx * -8) + 'px,0)';
+    });
+  }
+
+  // on narrow screens, start the scroll centred on the tallest peak
+  var scroller = document.getElementById('ridgeScroll');
+  requestAnimationFrame(function(){ scroller.scrollLeft = (scroller.scrollWidth - scroller.clientWidth) / 2; });
+
+  /* ---- Night / Sunrise ---- */
+  document.querySelectorAll('[data-sky]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var sunrise = btn.getAttribute('data-sky') === 'sunrise';
+      document.body.classList.toggle('sunrise', sunrise);
+      document.querySelectorAll('[data-sky]').forEach(function(b){ b.classList.toggle('active', b === btn); });
+      orb.setAttribute('cy', sunrise ? 300 : 120);
+      orb.setAttribute('r', sunrise ? 46 : 34);
+    });
+  });
+
+  /* ---- Stats ---- */
+  var countries = HIKES.map(function(h){ return h.country; }).filter(function(c, i, arr){ return arr.indexOf(c) === i; });
+  var highest = sorted[0];
+  document.getElementById('stats').innerHTML = [
+    [HIKES.length, 'SUMMITS'],
+    [highest.height.toLocaleString('en-US') + '<small> m</small>', 'HIGHEST · ' + esc(highest.name.toUpperCase())],
+    [countries.length, 'COUNTRIES'],
+    [HIKES.filter(function(h){ return h.country === 'Thailand'; }).length + '<small> TH</small> · ' +
+     HIKES.filter(function(h){ return h.country === 'China'; }).length + '<small> CN</small>', 'SPLIT']
+  ].map(function(s){ return '<div class="stat"><div class="num">' + s[0] + '</div><div class="lbl">' + s[1] + '</div></div>'; }).join('');
+
+  /* ---- Logbook ---- */
+  function miniRidge(seed){
+    var rr = rng(seed), d = 'M 0 100';
+    for (var i = 0; i <= 8; i++) d += ' L ' + (i * 12.5) + ' ' + (35 + rr() * 50).toFixed(1);
+    return '<svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d="' + d + ' L 100 100 Z" style="fill:var(--ridge-top)"/></svg>';
+  }
+  var logGrid = document.getElementById('logGrid');
+  logGrid.innerHTML = HIKES.map(function(h, i){
+    var media = h.photos.length
+      ? '<img src="' + h.photos[0] + '" alt="' + esc(h.name) + '" loading="lazy">'
+      : miniRidge(i * 13 + 5);
+    return '<button class="log-card" data-open="' + h.id + '" data-country="' + esc(h.country) + '">' +
+      '<div class="log-media">' + media + '<span class="log-flag">' + esc(h.country) + '</span></div>' +
+      '<div class="log-body"><h3>' + esc(h.name) + '</h3>' +
+      '<div class="log-meta"><span>' + esc(h.region) + '</span><span class="h">' + fmtH(h) + '</span></div></div></button>';
+  }).join('');
+
+  var logFilters = document.getElementById('logFilters');
+  logFilters.innerHTML = ['All'].concat(countries).map(function(c, i){
+    return '<button class="log-filter' + (i ? '' : ' active') + '" data-filter="' + esc(c) + '">' + esc(c) + '</button>';
+  }).join('');
+  logFilters.addEventListener('click', function(e){
+    var b = e.target.closest('.log-filter');
+    if (!b) return;
+    var c = b.getAttribute('data-filter');
+    logFilters.querySelectorAll('.log-filter').forEach(function(x){ x.classList.toggle('active', x === b); });
+    logGrid.querySelectorAll('.log-card').forEach(function(card){
+      card.classList.toggle('hide', c !== 'All' && card.getAttribute('data-country') !== c);
+    });
+  });
+
+  /* ---- Modal ---- */
+  var modal = document.getElementById('modal');
+  var gMain = document.getElementById('gMain');
+  var gThumbs = document.getElementById('gThumbs');
+  var current = null, photoIdx = 0, lastFocus = null;
+
+  function renderPhoto(){
+    var h = current, ph = h.photos;
+    if (!ph.length){
+      gMain.innerHTML = '<div class="g-empty">' + miniRidge(HIKES.indexOf(h) * 13 + 5) + '<span>Photos coming soon</span></div>';
+      gThumbs.innerHTML = '';
+      return;
+    }
+    gMain.innerHTML = '<img src="' + ph[photoIdx] + '" alt="' + esc(h.name) + ' photo ' + (photoIdx + 1) + '">' +
+      (ph.length > 1 ? '<button class="g-nav prev" aria-label="Previous photo">‹</button><button class="g-nav next" aria-label="Next photo">›</button>' : '');
+    gThumbs.innerHTML = ph.length > 1 ? ph.map(function(src, i){
+      return '<button class="g-thumb' + (i === photoIdx ? ' active' : '') + '" data-i="' + i + '" aria-label="Photo ' + (i + 1) + '"><img src="' + src + '" alt=""></button>';
+    }).join('') : '';
+  }
+  function stepPhoto(d){
+    if (!current || current.photos.length < 2) return;
+    photoIdx = (photoIdx + d + current.photos.length) % current.photos.length;
+    renderPhoto();
+  }
+  gMain.addEventListener('click', function(e){
+    if (e.target.closest('.prev')) stepPhoto(-1);
+    if (e.target.closest('.next')) stepPhoto(1);
+  });
+  gThumbs.addEventListener('click', function(e){
+    var t = e.target.closest('.g-thumb');
+    if (t){ photoIdx = +t.getAttribute('data-i'); renderPhoto(); }
+  });
+
+  function openPeak(id){
+    var h = HIKES.filter(function(x){ return x.id === id; })[0];
+    if (!h) return;
+    if (!modal.classList.contains('open')) lastFocus = document.activeElement;
+    current = h; photoIdx = 0;
+    document.getElementById('mWhere').textContent = h.region + ', ' + h.country + (h.kind ? ' · ' + h.kind : '');
+    document.getElementById('mName').textContent = h.name;
+    document.getElementById('mFacts').innerHTML =
+      '<div class="fact"><div class="v">' + fmtH(h) + '</div><div class="k">ELEVATION</div></div>' +
+      '<div class="fact"><div class="v">' + esc(h.date) + '</div><div class="k">HIKED</div></div>' +
+      '<div class="fact"><div class="v">#' + (sorted.indexOf(h) + 1) + ' of ' + n + '</div><div class="k">BY HEIGHT</div></div>';
+    document.getElementById('mStory').innerHTML = h.story.map(function(p){ return '<p>' + esc(p) + '</p>'; }).join('');
+    renderPhoto();
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    modal.querySelector('.modal-close').focus();
+  }
+  function closeModal(){
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    if (lastFocus) lastFocus.focus();
+  }
+  // previous / next follow the ridge from left to right
+  function stepPeak(d){
+    var i = order.indexOf(current);
+    openPeak(order[(i + d + n) % n].id);
+  }
+  document.getElementById('mPrev').addEventListener('click', function(){ stepPeak(-1); });
+  document.getElementById('mNext').addEventListener('click', function(){ stepPeak(1); });
+
+  document.addEventListener('click', function(e){
+    var o = e.target.closest('[data-open]');
+    if (o){ openPeak(o.getAttribute('data-open')); return; }
+    if (e.target.closest('[data-close]')) closeModal();
+  });
+  document.addEventListener('keydown', function(e){
+    if (!modal.classList.contains('open')) return;
+    if (e.key === 'Escape') closeModal();
+    if (e.key === 'ArrowRight') stepPhoto(1);
+    if (e.key === 'ArrowLeft') stepPhoto(-1);
+  });
+
+  document.getElementById('year').textContent = new Date().getFullYear();
+})();
+</script>
+
+</body>
+</html>
