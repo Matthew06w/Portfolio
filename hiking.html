@@ -327,7 +327,7 @@
 <body>
 
 <nav class="nav">
-  <a class="back" href="portfolio_prototype.html#about">← Portfolio</a>
+  <a class="back" href="index.html#about">← Portfolio</a>
   <div class="sky-toggle" role="group" aria-label="Sky">
     <button class="active" data-sky="night">☾ Night</button>
     <button data-sky="sunrise">☀ Sunrise</button>
@@ -338,7 +338,6 @@
   <div class="scene-head">
     <div class="kicker">// SUMMIT LOG</div>
     <h1>Peaks I've stood on</h1>
-    <p>Trails across Thailand and China, drawn to scale. Every flag is a summit.</p>
     <div class="hint"><span class="dot"></span>Click a peak to open the trip</div>
   </div>
   <div class="ridge-scroll" id="ridgeScroll">
@@ -359,7 +358,7 @@
 
   <footer>
     <span>© <span id="year"></span> Matthew Hema</span>
-    <a href="portfolio_prototype.html">Back to portfolio →</a>
+    <a href="index.html">Back to portfolio →</a>
   </footer>
 </main>
 
@@ -416,12 +415,23 @@ var HIKES = [
   {
     id: 'khao-hua-muak',
     name: 'Khao Hua Muak',
-    region: '[Province]',
+    region: 'Nakhon Nayok',
     country: 'Thailand',
-    height: 300, approx: true,
-    date: '[Month Year]',
-    photos: [],
-    story: ['[A few lines about this hike.]']
+    height: 536,
+    date: '16 Jan 2026',
+    photos: ['hiking_imgs/khm1.jpg', 'hiking_imgs/khm2.jpg'],
+    story: ['I hiked Khao Hua Muak with my mom and my brother. The trail was about 4 km and took us around 3 hours.']
+  },
+  {
+    id: 'khao-nang-phanthurat',
+    name: 'Khao Nang Phanthurat',
+    short: 'Nang Phanthurat',
+    region: 'Phetchaburi',
+    country: 'Thailand',
+    height: 370,
+    date: '14 Jan 2026',
+    photos: ['hiking_imgs/Knptr1.jpg', 'hiking_imgs/Knptr2.jpg', 'hiking_imgs/Knptr3.jpg'],
+    story: ['I hiked Khao Nang Phanthurat with my dad on a hot day. It took around 3 hours. As the only peak in the area, it has a really nice view over the surrounding land.']
   },
   {
     id: 'khao-lom-muak',
@@ -691,10 +701,13 @@ var HIKES = [
 
   /* ---- Stats ---- */
   var countries = HIKES.map(function(h){ return h.country; }).filter(function(c, i, arr){ return arr.indexOf(c) === i; });
-  var highest = sorted[0];
+  // every peak stacked on top of each other, compared with Everest (8,849 m)
+  var stacked = HIKES.reduce(function(sum, h){ return sum + h.height; }, 0);
+  var anyApprox = HIKES.some(function(h){ return h.approx; });
   document.getElementById('stats').innerHTML = [
     [HIKES.length, 'HIKES'],
-    [highest.height.toLocaleString('en-US') + '<small> m</small>', 'HIGHEST · ' + esc(highest.name.toUpperCase())],
+    [(anyApprox ? '<small>≈ </small>' : '') + stacked.toLocaleString('en-US') + '<small> m</small>',
+     'ALL PEAKS STACKED · ' + Math.round(stacked / 8849 * 100) + '% OF EVEREST'],
     [countries.length, 'COUNTRIES'],
     [HIKES.filter(function(h){ return h.country === 'Thailand'; }).length + '<small> TH</small> · ' +
      HIKES.filter(function(h){ return h.country === 'China'; }).length + '<small> CN</small>', 'SPLIT']
