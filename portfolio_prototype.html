@@ -614,6 +614,90 @@
     border-bottom:1px solid rgba(63,208,255,.4);
   }
 
+  /* EDUCATION TIMELINE */
+  .timeline{
+    list-style:none; margin:0; padding:0 0 0 34px;
+    position:relative;
+    display:grid; gap:18px;
+  }
+  .timeline::before{
+    content:"";
+    position:absolute; left:9px; top:8px; bottom:8px; width:2px;
+    background:linear-gradient(180deg, var(--accent), var(--accent-2) 60%, var(--border) 100%);
+    border-radius:2px;
+  }
+  .edu{position:relative;}
+  .edu-dot{
+    position:absolute; left:-31px; top:28px;
+    width:16px; height:16px; border-radius:50%;
+    background:var(--bg); border:2px solid var(--border-strong);
+  }
+  .edu.current .edu-dot{border-color:var(--accent); background:var(--accent); box-shadow:0 0 0 5px rgba(63,208,255,.15), 0 0 18px var(--accent-glow);}
+  .edu-card{
+    display:flex; justify-content:space-between; align-items:center; gap:24px;
+    border:1px solid var(--border);
+    background:var(--surface);
+    border-radius:var(--radius);
+    padding:24px 26px;
+    transition:border-color .3s, transform .3s;
+  }
+  .edu-card:hover{border-color:var(--border-strong); transform:translateX(4px);}
+  .edu.current .edu-card{
+    border-color:rgba(63,208,255,.35);
+    background:linear-gradient(120deg, rgba(63,208,255,.07), var(--surface) 55%);
+  }
+  .edu-years{
+    display:flex; align-items:center; gap:12px; flex-wrap:wrap;
+    font-family:var(--font-mono); font-size:12px; color:var(--text-faint); letter-spacing:.06em;
+  }
+  .now{
+    display:inline-flex; align-items:center; gap:6px;
+    color:#3DDC84; font-weight:700;
+  }
+  .edu h3{font-size:clamp(19px, 2.4vw, 23px); margin:6px 0 2px; letter-spacing:-0.01em;}
+  .edu-school{color:var(--text-soft); margin-bottom:14px;}
+  .edu-chips{display:flex; gap:6px; flex-wrap:wrap;}
+  /* short programme attached under a main entry */
+  .edu-sub{
+    position:relative;
+    display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap;
+    margin:10px 0 0 28px;
+    padding:16px 20px;
+    border:1px dashed var(--border-strong);
+    border-radius:14px;
+    background:var(--bg-2);
+    text-decoration:none; color:inherit;
+    transition:border-color .3s, transform .3s;
+  }
+  .edu-sub::before{
+    content:"";
+    position:absolute; left:-18px; top:-11px;
+    width:16px; height:calc(50% + 11px);
+    border-left:2px solid var(--border-strong);
+    border-bottom:2px solid var(--border-strong);
+    border-bottom-left-radius:10px;
+  }
+  .edu-sub:hover{border-color:var(--accent); transform:translateX(4px);}
+  .edu-sub h4{font-size:17px; margin:4px 0 0;}
+  .edu-sub .edu-school{margin:0; font-size:14.5px;}
+  .edu-sub-cta{color:var(--accent); font-weight:600; font-size:14px;}
+  .chip.award{color:var(--warm); border-color:rgba(255,181,71,.35); background:rgba(255,181,71,.07);}
+  .edu-gpa{
+    flex:none; text-align:center;
+    border:1px solid var(--border-strong);
+    background:var(--bg-2);
+    border-radius:14px;
+    padding:12px 18px;
+    min-width:96px;
+  }
+  .edu-gpa .g{font-size:28px; font-weight:700; line-height:1; color:var(--text);}
+  .edu-gpa .l{font-family:var(--font-mono); font-size:10.5px; color:var(--text-faint); margin-top:6px; letter-spacing:.08em;}
+  @media (max-width:640px){
+    .edu-card{flex-direction:column; align-items:flex-start; padding:20px;}
+    .edu-gpa{display:flex; align-items:baseline; gap:8px; padding:8px 14px; min-width:0;}
+    .edu-gpa .l{margin-top:0;}
+  }
+
   /* SKILLS */
   .skills-grid{
     display:grid;
@@ -743,6 +827,7 @@
     <a href="#top" class="logo"><span class="logo-mark">MH</span>matthew.hema</a>
     <div class="nav-links">
       <a href="#work" class="keep">Work</a>
+      <a href="#education">Education</a>
       <a href="#skills">Skills</a>
       <a href="#about">About</a>
       <a href="#contact" class="keep">Contact</a>
@@ -813,10 +898,75 @@
     <div class="grid" id="grid"></div>
   </section>
 
+  <!-- EDUCATION -->
+  <section id="education">
+    <div class="sec-head reveal">
+      <div class="sec-kicker">// 02 — EDUCATION</div>
+      <h2 class="sec-title">Where I've studied</h2>
+      <p class="sec-sub">Two science schools in Thailand, then engineering at SUTD in Singapore.</p>
+    </div>
+
+    <ol class="timeline">
+      <li class="edu reveal current">
+        <div class="edu-dot"></div>
+        <div class="edu-card">
+          <div class="edu-main">
+            <div class="edu-years">2025 — PRESENT <span class="now"><span class="pulse"></span>NOW</span></div>
+            <h3>B.Eng, Engineering Product Development</h3>
+            <div class="edu-school">Singapore University of Technology and Design (SUTD)</div>
+            <div class="edu-chips">
+              <span class="chip accent">Major in Mechanical Engineering</span>
+              <span class="chip award">★ ASEAN Scholarship</span>
+              <span class="chip">Singapore</span>
+            </div>
+          </div>
+        </div>
+        <a class="edu-sub" href="https://myjourney.sutd.edu.sg/c/mMgiDWONBLX-mNFSEzcjD/" target="_blank" rel="noopener noreferrer">
+          <div>
+            <div class="edu-years">23 — 30 AUG 2026 · 1 WEEK</div>
+            <h4>DGIS 2026 Exchange Programme</h4>
+            <div class="edu-school">Chongqing University, China</div>
+          </div>
+          <span class="edu-sub-cta">View journey →</span>
+        </a>
+      </li>
+      <li class="edu reveal">
+        <div class="edu-dot"></div>
+        <div class="edu-card">
+          <div class="edu-main">
+            <div class="edu-years">2022 — 2025</div>
+            <h3>High School Diploma</h3>
+            <div class="edu-school">Mahidol Wittayanusorn School</div>
+            <div class="edu-chips">
+              <span class="chip award">★ Full Scholarship</span>
+              <span class="chip">Thailand</span>
+            </div>
+          </div>
+          <div class="edu-gpa"><div class="g">3.95</div><div class="l">GPAX</div></div>
+        </div>
+      </li>
+      <li class="edu reveal">
+        <div class="edu-dot"></div>
+        <div class="edu-card">
+          <div class="edu-main">
+            <div class="edu-years">2019 — 2022</div>
+            <h3>Secondary School</h3>
+            <div class="edu-school">Princess Chulabhorn Science High School</div>
+            <div class="edu-chips">
+              <span class="chip award">★ Full Scholarship</span>
+              <span class="chip">Thailand</span>
+            </div>
+          </div>
+          <div class="edu-gpa"><div class="g">3.99</div><div class="l">GPA</div></div>
+        </div>
+      </li>
+    </ol>
+  </section>
+
   <!-- SKILLS -->
   <section id="skills">
     <div class="sec-head reveal">
-      <div class="sec-kicker">// 02 — TOOLBOX</div>
+      <div class="sec-kicker">// 03 — TOOLBOX</div>
       <h2 class="sec-title">Skills &amp; tools</h2>
       <p class="sec-sub">The full stack from model training to soldering iron.</p>
     </div>
@@ -878,7 +1028,7 @@
   <!-- ABOUT / HOBBIES -->
   <section id="about">
     <div class="sec-head reveal">
-      <div class="sec-kicker">// 03 — OUTSIDE THE BENCH</div>
+      <div class="sec-kicker">// 04 — OUTSIDE THE BENCH</div>
       <h2 class="sec-title">When I'm not building</h2>
     </div>
     <div class="about-grid">
@@ -904,7 +1054,7 @@
         <div>
           <div class="h-tag">EXPLORE</div>
           <h3>Hiking</h3>
-          <p>7 summits across Thailand and China, from Doi Khun Tan to Huangshan.</p>
+          <p>8 hikes across Thailand and China, from Doi Khun Tan to Huangshan.</p>
           <span class="hike-cta">Walk the ridge →</span>
         </div>
         <svg class="hike-ridge" viewBox="0 0 300 100" preserveAspectRatio="none" aria-hidden="true">
@@ -919,7 +1069,7 @@
   <!-- CONTACT -->
   <section id="contact">
     <div class="contact reveal">
-      <div class="sec-kicker">// 04 — CONTACT</div>
+      <div class="sec-kicker">// 05 — CONTACT</div>
       <h2>Let's build<br>something.</h2>
       <p>Open to internships, research and collaborations in computer vision, hardware and product design.</p>
       <div class="btn-row">

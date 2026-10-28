@@ -218,7 +218,7 @@
   .log-card:hover, .log-card:focus-visible{transform:translateY(-5px); border-color:var(--accent); outline:none;}
   .log-card.hide{display:none;}
   .log-media{
-    position:relative; aspect-ratio:4/3; overflow:hidden;
+    position:relative; aspect-ratio:1/1; overflow:hidden;
     background:linear-gradient(180deg, var(--sky-mid), var(--sky-bot));
   }
   .log-media img{width:100%; height:100%; object-fit:cover; transition:transform .5s;}
@@ -255,13 +255,13 @@
     color:var(--text); font-size:20px; cursor:pointer;
   }
   .modal-close:hover{border-color:var(--accent); color:var(--accent);}
-  .modal-grid{display:grid; grid-template-columns:1.2fr 1fr;}
+  .modal-grid{display:grid; grid-template-columns:1fr 1fr;}
   .gallery{padding:16px; background:#000; border-radius:22px 0 0 22px;}
   .g-main{
-    position:relative; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+    position:relative; aspect-ratio:1/1; border-radius:12px; overflow:hidden;
     background:linear-gradient(180deg, var(--sky-mid), var(--sky-bot));
   }
-  .g-main img{width:100%; height:100%; object-fit:contain; background:#05070A;}
+  .g-main img{width:100%; height:100%; object-fit:cover; background:#05070A;}
   .g-empty{
     position:absolute; inset:0; display:grid; place-items:center; text-align:center;
     font-family:var(--font-mono); font-size:12px; color:var(--text-soft);
@@ -276,7 +276,7 @@
   }
   .g-nav.prev{left:10px;} .g-nav.next{right:10px;}
   .g-thumbs{display:flex; gap:8px; margin-top:10px; flex-wrap:wrap;}
-  .g-thumb{width:72px; aspect-ratio:4/3; border-radius:8px; overflow:hidden; border:2px solid transparent; padding:0; background:#05070A; cursor:pointer; opacity:.55;}
+  .g-thumb{width:64px; aspect-ratio:1/1; border-radius:8px; overflow:hidden; border:2px solid transparent; padding:0; background:#05070A; cursor:pointer; opacity:.55;}
   .g-thumb img{width:100%; height:100%; object-fit:cover;}
   .g-thumb.active, .g-thumb:hover{opacity:1; border-color:var(--accent);}
   .info{padding:34px 32px;}
@@ -392,18 +392,26 @@
    - height: metres above sea level
    - approx: true shows "≈" before the height (set false once checked)
    - photos: e.g. ['images/hiking/huangshan-1.jpg', 'images/hiking/huangshan-2.jpg']
+   - canyon: true draws a dip in the ridge from `height` (rim) down to `low`,
+     or down by `gain` metres if there is no `low`
+   - low: lowest trail elevation, shown as a range with height
+   - gain: elevation gain in metres (only used to size a canyon's dip, not shown)
+   - short: shorter label for the flag on the ridge
    The ridge puts the tallest peak in the middle automatically.
    ========================================================= */
 var HIKES = [
   {
     id: 'doi-khun-tan',
     name: 'Doi Khun Tan',
-    region: 'Near Chiang Mai',
+    region: 'Lamphun',
     country: 'Thailand',
     height: 1373,
-    date: '[Month Year]',
-    photos: [],
-    story: ['[A few lines about this hike: the trail, the view, who you went with.]']
+    date: '23–24 Dec 2025',
+    photos: ['hiking_imgs/kt0.jpg', 'hiking_imgs/kt1.jpg', 'hiking_imgs/kt2.jpg', 'hiking_imgs/kt3.jpg'],
+    story: [
+      'This was my first hike in Thailand. We walked for about 5–6 hours to reach the campsite and set up our tents for the night.',
+      'The next morning, we started hiking again at around 4 a.m. and reached the summit at about 7 a.m.'
+    ]
   },
   {
     id: 'khao-hua-muak',
@@ -457,6 +465,18 @@ var HIKES = [
     story: ['[A few lines about this hike.]']
   },
   {
+    id: 'jinglongli',
+    name: 'Jinglongli Grand Canyon',
+    short: 'Jinglongli Canyon',
+    region: 'Anji, Zhejiang',
+    country: 'China',
+    kind: 'Canyon',
+    height: 1000,
+    date: '[Month Year]',
+    photos: [],
+    story: ['[A few lines about this hike.]']
+  },
+  {
     id: 'huangshan',
     name: 'Huangshan',
     region: 'Anhui',
@@ -487,7 +507,10 @@ var HIKES = [
     return e;
   }
   function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
-  function fmtH(h){ return (h.approx ? '≈ ' : '') + h.height.toLocaleString('en-US') + ' m'; }
+  function fmtH(h){
+    var top = h.height.toLocaleString('en-US');
+    return (h.approx ? '≈ ' : '') + (h.low ? h.low.toLocaleString('en-US') + '–' + top : top) + ' m';
+  }
 
   // deterministic randomness so the ridge looks the same on every load
   function rng(seed){
@@ -503,7 +526,7 @@ var HIKES = [
   var sorted = HIKES.slice().sort(function(a, b){ return b.height - a.height; });
   var n = sorted.length;
   var order = new Array(n);
-  var mid = Math.floor((n - 1) / 2);
+  var mid = Math.floor(n / 2);
   sorted.forEach(function(h, i){
     var offset = Math.ceil(i / 2) * (i % 2 ? -1 : 1);
     order[mid + offset] = h;
@@ -513,6 +536,7 @@ var HIKES = [
   order.forEach(function(h, i){
     h._x = n === 1 ? W / 2 : PAD + i * (W - 2 * PAD) / (n - 1);
     h._y = yOf(h.height);
+    if (h.canyon) h._floor = yOf(h.low != null ? h.low : h.gain ? h.height - h.gain : h.height * .85);
   });
 
   /* ---- Defs: gradients ---- */
@@ -555,7 +579,12 @@ var HIKES = [
   /* ---- Main ridge through the peaks ---- */
   var anchors = [{x:-20, y:yOf(order[0].height * .3)}];
   order.forEach(function(h, i){
-    anchors.push({x:h._x, y:h._y, peak:true});
+    if (h.canyon){
+      // rim — steep walls — narrow floor — rim
+      anchors.push({x:h._x - 38, y:h._y}, {x:h._x - 9, y:h._floor}, {x:h._x + 9, y:h._floor}, {x:h._x + 38, y:h._y});
+    } else {
+      anchors.push({x:h._x, y:h._y, peak:true});
+    }
     if (i < n - 1){
       var nx = order[i + 1];
       anchors.push({x:(h._x + nx._x) / 2, y:yOf(Math.min(h.height, nx.height) * .38)});
@@ -588,16 +617,18 @@ var HIKES = [
   order.forEach(function(h, i){
     var g = el('g', {class:'peak', tabindex:0, role:'button', 'aria-label':h.name + ', ' + fmtH(h)}, peaks);
     g.dataset.id = h.id;
-    el('circle', {class:'pin-pulse', cx:h._x, cy:h._y, r:6}, g);
-    el('line', {class:'stem', x1:h._x, x2:h._x, y1:h._y - 6, y2:h._y - 34}, g);
+    // canyons put the pin on the floor; the stem drops into the gorge
+    var pinY = h.canyon ? h._floor : h._y;
+    el('circle', {class:'pin-pulse', cx:h._x, cy:pinY, r:6}, g);
+    el('line', {class:'stem', x1:h._x, x2:h._x, y1:pinY - 6, y2:h._y - 34}, g);
     var flag = el('g', {class:'flag'}, g);
     var box = el('rect', {class:'flag-box', y:h._y - 80, height:46, rx:9}, flag);
     var name = el('text', {class:'flag-name', x:h._x, y:h._y - 61, 'text-anchor':'middle'}, flag);
-    name.textContent = h.name;
+    name.textContent = h.short || h.name;
     var ht = el('text', {class:'flag-h', x:h._x, y:h._y - 44, 'text-anchor':'middle'}, flag);
     ht.textContent = fmtH(h);
-    el('circle', {class:'pin', cx:h._x, cy:h._y, r:6}, g);
-    var w = Math.max(name.getComputedTextLength ? name.getComputedTextLength() : 100, 70) + 24;
+    el('circle', {class:'pin', cx:h._x, cy:pinY, r:6}, g);
+    var w = Math.max(name.getComputedTextLength(), ht.getComputedTextLength(), 70) + 24;
     box.setAttribute('x', h._x - w / 2);
     box.setAttribute('width', w);
 
@@ -662,7 +693,7 @@ var HIKES = [
   var countries = HIKES.map(function(h){ return h.country; }).filter(function(c, i, arr){ return arr.indexOf(c) === i; });
   var highest = sorted[0];
   document.getElementById('stats').innerHTML = [
-    [HIKES.length, 'SUMMITS'],
+    [HIKES.length, 'HIKES'],
     [highest.height.toLocaleString('en-US') + '<small> m</small>', 'HIGHEST · ' + esc(highest.name.toUpperCase())],
     [countries.length, 'COUNTRIES'],
     [HIKES.filter(function(h){ return h.country === 'Thailand'; }).length + '<small> TH</small> · ' +
