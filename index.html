@@ -622,6 +622,58 @@
     border-bottom:1px solid rgba(63,208,255,.4);
   }
 
+  /* EXPERIENCE */
+  .jobs{display:grid; gap:18px;}
+  .job{
+    display:grid; grid-template-columns:200px 1fr; gap:28px; align-items:center;
+    border:1px solid var(--border);
+    background:var(--surface);
+    border-radius:var(--radius);
+    padding:26px 28px;
+    transition:transform .3s, border-color .3s;
+  }
+  .job:hover{transform:translateY(-3px); border-color:var(--border-strong);}
+  .job.current{
+    border-color:rgba(63,208,255,.35);
+    background:linear-gradient(120deg, rgba(63,208,255,.07), var(--surface) 55%);
+  }
+  .job.current:hover{border-color:var(--accent);}
+  /* logo panel fits both wide wordmarks and square emblems */
+  .job-logo{
+    position:relative;
+    height:110px; border-radius:14px;
+    border:1px solid var(--border-strong);
+    background:var(--bg);
+    display:grid; place-items:center;
+    overflow:hidden;
+  }
+  .job-logo img{position:absolute; inset:18px; width:calc(100% - 36px); height:calc(100% - 36px); object-fit:contain; z-index:1;}
+  .job-logo img + .job-initial{visibility:hidden;}
+  /* for logos designed on a white background */
+  .job-logo.light{background:#fff; border-color:#fff;}
+  .job-logo.light .job-initial{color:#111;}
+  .job-logo.light img{inset:12px; width:calc(100% - 24px); height:calc(100% - 24px);}
+  .job-initial{font-size:40px; font-weight:700; color:var(--text);}
+  .job h3{font-size:clamp(26px, 3.6vw, 34px); line-height:1.1; margin:6px 0 4px; letter-spacing:-0.02em;}
+  .job-role{color:var(--accent); margin-bottom:14px; font-weight:500; font-size:16px;}
+  .job-links{display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-top:16px;}
+  .job-links-label{font-family:var(--font-mono); font-size:11.5px; color:var(--text-faint);}
+  .job-link{
+    font:inherit; font-size:13.5px; font-weight:500;
+    color:var(--accent);
+    background:transparent;
+    border:1px solid rgba(63,208,255,.3);
+    border-radius:999px;
+    padding:5px 12px;
+    cursor:pointer;
+    transition:background .2s;
+  }
+  .job-link:hover{background:rgba(63,208,255,.1);}
+  @media (max-width:720px){
+    .job{grid-template-columns:1fr; gap:18px; padding:20px;}
+    .job-logo{height:84px; max-width:240px;}
+  }
+
   /* EDUCATION TIMELINE */
   .timeline{
     list-style:none; margin:0; padding:0 0 0 34px;
@@ -835,6 +887,7 @@
     <a href="#top" class="logo"><span class="logo-mark">MH</span>matthew.hema</a>
     <div class="nav-links">
       <a href="#work" class="keep">Work</a>
+      <a href="#experience">Experience</a>
       <a href="#education">Education</a>
       <a href="#skills">Skills</a>
       <a href="#about">About</a>
@@ -863,7 +916,7 @@
         <a href="#contact" class="btn">Get in touch</a>
       </div>
       <div class="stats">
-        <div class="stat"><div class="num" data-count="7">0</div><div class="lbl">PROJECTS</div></div>        <div class="stat"><div class="num" data-count="2">0</div><div class="lbl">RESEARCH @ KMUTT</div></div>
+        <div class="stat"><div class="num" data-count="7">0</div><div class="lbl">PROJECTS</div></div>
         <div class="stat"><div class="num">CV<span>+</span>HW</div><div class="lbl">AI MEETS HARDWARE</div></div>
       </div>
     </div>
@@ -906,10 +959,60 @@
     <div class="grid" id="grid"></div>
   </section>
 
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <div class="sec-head reveal">
+      <div class="sec-kicker">// 02 — EXPERIENCE</div>
+      <h2 class="sec-title">Where I've worked</h2>
+    </div>
+
+    <!-- logos: white or transparent PNGs; the letter shows until the file exists -->
+    <div class="jobs">
+      <div class="job reveal current">
+        <div class="job-logo light">
+          <img src="images/blacklyte.png" alt="Blacklyte" onerror="this.remove()">
+          <span class="job-initial" aria-hidden="true">B</span>
+        </div>
+        <div class="job-main">
+          <div class="edu-years">14 OCT 2026 — PRESENT <span class="now"><span class="pulse"></span>NOW</span></div>
+          <h3>Blacklyte</h3>
+          <div class="job-role">Intern, Market Research &amp; R&amp;D Product Design</div>
+          <div class="edu-chips">
+            <span class="chip accent">Market research</span>
+            <span class="chip accent">R&amp;D</span>
+            <span class="chip accent">Product design</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="job reveal">
+        <div class="job-logo light">
+          <img src="images/kmutt-ncri.png" alt="Neuroscience Center for Research and Innovation, KMUTT" onerror="this.remove()">
+          <span class="job-initial" aria-hidden="true">K</span>
+        </div>
+        <div class="job-main">
+          <div class="edu-years">SEP 2024 — JAN 2025</div>
+          <h3>KMUTT</h3>
+          <div class="job-role">Research Intern · Neuroscience Center for Research and Innovation</div>
+          <div class="edu-chips">
+            <span class="chip accent">Deep learning</span>
+            <span class="chip accent">Computer vision</span>
+            <span class="chip accent">Medical imaging</span>
+          </div>
+          <div class="job-links">
+            <span class="job-links-label">Projects:</span>
+            <button class="job-link" data-open="sign-language">Sign Language Translator →</button>
+            <button class="job-link" data-open="mri-dementia">MRI Dementia Classification →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- EDUCATION -->
   <section id="education">
     <div class="sec-head reveal">
-      <div class="sec-kicker">// 02 — EDUCATION</div>
+      <div class="sec-kicker">// 03 — EDUCATION</div>
       <h2 class="sec-title">Where I've studied</h2>
       <p class="sec-sub">Two science schools in Thailand, then engineering at SUTD in Singapore.</p>
     </div>
@@ -974,7 +1077,7 @@
   <!-- SKILLS -->
   <section id="skills">
     <div class="sec-head reveal">
-      <div class="sec-kicker">// 03 — TOOLBOX</div>
+      <div class="sec-kicker">// 04 — TOOLBOX</div>
       <h2 class="sec-title">Skills &amp; tools</h2>
       <p class="sec-sub">The full stack from model training to soldering iron.</p>
     </div>
@@ -1036,7 +1139,7 @@
   <!-- ABOUT / HOBBIES -->
   <section id="about">
     <div class="sec-head reveal">
-      <div class="sec-kicker">// 04 — OUTSIDE THE BENCH</div>
+      <div class="sec-kicker">// 05 — OUTSIDE THE BENCH</div>
       <h2 class="sec-title">When I'm not building</h2>
     </div>
     <div class="about-grid">
@@ -1077,7 +1180,7 @@
   <!-- CONTACT -->
   <section id="contact">
     <div class="contact reveal">
-      <div class="sec-kicker">// 05 — CONTACT</div>
+      <div class="sec-kicker">// 06 — CONTACT</div>
       <h2>Let's build<br>something.</h2>
       <p>Open to internships, research and collaborations in computer vision, hardware and product design.</p>
       <div class="btn-row">
