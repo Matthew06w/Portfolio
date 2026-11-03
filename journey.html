@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Matthew Hema — University Journey</title>
+<meta name="description" content="Term by term at SUTD: class projects, competitions, basketball and music.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#07090D;
+    --bg-2:#0D1118;
+    --surface:#121823;
+    --border:#232C3B;
+    --border-strong:#33405A;
+    --text:#E8EDF5;
+    --text-soft:#9AA6B8;
+    --text-faint:#5E6B7E;
+    --accent:#3FD0FF;
+    --warm:#FFB547;
+    --lime:#B6F36A;
+    --lime-soft:rgba(182,243,106,.10);
+    --lime-line:rgba(182,243,106,.35);
+    --pill-bg:rgba(7,9,13,.6);
+
+    --font-head:'Space Grotesk', system-ui, sans-serif;
+    --font-mono:'JetBrains Mono', ui-monospace, monospace;
+  }
+  :root[data-theme="light"]{
+    --bg:#F5F7FA;
+    --bg-2:#EDF1F6;
+    --surface:#FFFFFF;
+    --border:#DDE3EB;
+    --border-strong:#C4CEDA;
+    --text:#0E141C;
+    --text-soft:#4A5668;
+    --text-faint:#7A8698;
+    --accent:#0284C7;
+    --warm:#B86A00;
+    --lime:#4C9A0E;
+    --lime-soft:rgba(76,154,14,.09);
+    --lime-line:rgba(76,154,14,.35);
+    --pill-bg:rgba(255,255,255,.85);
+    color-scheme:light;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--font-head);
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+  img{max-width:100%; display:block;}
+  a{color:inherit;}
+  ::selection{background:var(--lime); color:#0B1404;}
+  .wrap{max-width:1080px; margin:0 auto; padding:0 24px;}
+
+  .glow{
+    position:fixed; width:620px; height:620px; border-radius:50%;
+    filter:blur(120px); z-index:-1; pointer-events:none;
+  }
+  .glow.a{background:var(--accent); top:-220px; right:-180px; opacity:.16;}
+  .glow.b{background:var(--lime); bottom:-280px; left:-240px; opacity:.09;}
+  [data-theme="light"] .glow{opacity:.1;}
+
+  /* NAV */
+  .nav{
+    position:fixed; top:0; left:0; right:0; z-index:40;
+    display:flex; justify-content:space-between; align-items:center;
+    padding:18px 24px;
+    pointer-events:none;
+  }
+  .nav > *{pointer-events:auto;}
+  .back{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:14px; text-decoration:none; color:var(--text);
+    padding:9px 16px; border-radius:999px;
+    background:var(--pill-bg); border:1px solid var(--border-strong);
+    backdrop-filter:blur(10px);
+  }
+  .back:hover{border-color:var(--accent);}
+  .theme-toggle{
+    width:40px; height:40px; border-radius:50%;
+    border:1px solid var(--border-strong);
+    background:var(--pill-bg); color:var(--text);
+    backdrop-filter:blur(10px);
+    display:grid; place-items:center; cursor:pointer;
+    transition:border-color .2s, transform .3s;
+  }
+  .theme-toggle:hover{border-color:var(--accent); transform:rotate(-20deg);}
+  .theme-toggle .sun{display:none;}
+  [data-theme="light"] .theme-toggle .sun{display:block;}
+  [data-theme="light"] .theme-toggle .moon{display:none;}
+  html.theme-anim, html.theme-anim *{transition:background-color .35s ease, border-color .35s ease, color .35s ease !important;}
+
+  /* HERO */
+  header{padding:120px 0 40px;}
+  .kicker{font-family:var(--font-mono); font-size:12.5px; color:var(--lime); letter-spacing:.1em;}
+  h1{font-size:clamp(40px, 7vw, 76px); line-height:1; letter-spacing:-0.03em; margin:14px 0 16px;}
+  .lede{color:var(--text-soft); max-width:58ch; margin:0;}
+  .jump{display:flex; flex-wrap:wrap; gap:8px; margin-top:26px;}
+  .jump a{
+    font-family:var(--font-mono); font-size:12.5px; text-decoration:none;
+    padding:7px 14px; border-radius:999px;
+    border:1px solid var(--border-strong); color:var(--text-soft);
+    transition:border-color .2s, color .2s;
+  }
+  .jump a:hover{border-color:var(--lime); color:var(--text);}
+
+  /* TERM TIMELINE */
+  .term{
+    display:grid; grid-template-columns:200px 1fr; gap:32px;
+    padding:44px 0;
+    border-top:1px solid var(--border);
+    scroll-margin-top:70px;
+  }
+  .term-label{position:sticky; top:90px; align-self:start;}
+  .term-label .n{font-family:var(--font-mono); font-size:12px; color:var(--lime); letter-spacing:.08em;}
+  .term-label h2{font-size:30px; margin:4px 0 2px; letter-spacing:-0.02em; line-height:1.1;}
+  .term-label .when{font-family:var(--font-mono); font-size:12px; color:var(--text-faint);}
+  .now{
+    display:inline-flex; align-items:center; gap:6px; margin-top:10px;
+    font-family:var(--font-mono); font-size:11px; font-weight:700; color:var(--lime);
+    border:1px solid var(--lime-line); background:var(--lime-soft);
+    padding:3px 10px; border-radius:999px;
+  }
+  .now::before{content:""; width:7px; height:7px; border-radius:50%; background:var(--lime); animation:pulse 1.8s infinite;}
+  @keyframes pulse{50%{opacity:.3;}}
+
+  .items{display:grid; gap:16px;}
+  .item{
+    border:1px solid var(--border);
+    background:var(--surface);
+    border-radius:16px;
+    padding:24px 26px;
+    transition:border-color .3s;
+  }
+  .item:hover{border-color:var(--border-strong);}
+  .item-top{display:flex; justify-content:space-between; align-items:baseline; gap:12px; flex-wrap:wrap;}
+  .item h3{font-size:21px; margin:0; letter-spacing:-0.01em; line-height:1.25;}
+  .item .date{font-family:var(--font-mono); font-size:12px; color:var(--text-faint); flex:none;}
+  .item p{color:var(--text-soft); margin:10px 0 0;}
+  .award{
+    display:inline-flex; gap:6px; margin-top:12px;
+    font-family:var(--font-mono); font-size:12px; font-weight:700;
+    color:var(--warm); border:1px solid color-mix(in srgb, var(--warm) 40%, transparent);
+    background:color-mix(in srgb, var(--warm) 8%, transparent);
+    padding:4px 12px; border-radius:999px;
+  }
+  .tags{display:flex; flex-wrap:wrap; gap:6px; margin-top:14px;}
+  .tag{
+    font-family:var(--font-mono); font-size:11.5px; color:var(--text-soft);
+    border:1px solid var(--border); padding:3px 10px; border-radius:999px;
+  }
+  .item-link{display:inline-block; margin-top:14px; color:var(--accent); font-weight:600; text-decoration:none;}
+  .item-link:hover{text-decoration:underline;}
+
+  /* photos: files that don't exist yet remove themselves, an empty strip hides */
+  .photos{display:grid; grid-template-columns:repeat(auto-fill, minmax(120px, 1fr)); gap:8px; margin-top:16px;}
+  .photos:empty{display:none;}
+  .clip{width:100%; max-height:480px; margin-top:16px; border-radius:12px; background:#000;}
+  .clip.yt{display:block; aspect-ratio:16/9; height:auto; border:0;}
+  .photos button{
+    padding:0; border:0; border-radius:10px; overflow:hidden; cursor:zoom-in;
+    aspect-ratio:1/1; background:var(--bg-2);
+  }
+  .photos img{width:100%; height:100%; object-fit:cover; transition:transform .4s;}
+  .photos button:hover img{transform:scale(1.06);}
+
+  /* projects that live on the main page */
+  .also{
+    display:flex; flex-wrap:wrap; align-items:center; gap:8px;
+    padding:16px 20px; border:1px dashed var(--border-strong); border-radius:14px;
+  }
+  .also span{font-family:var(--font-mono); font-size:12px; color:var(--text-faint); margin-right:4px;}
+  .also a{
+    font-size:14px; text-decoration:none; color:var(--text);
+    padding:5px 12px; border-radius:999px;
+    border:1px solid var(--lime-line); background:var(--lime-soft);
+    transition:border-color .2s;
+  }
+  .also a:hover{border-color:var(--lime);}
+
+  /* LIFE: basketball + music */
+  .life-head{padding:64px 0 8px; border-top:1px solid var(--border); scroll-margin-top:40px;}
+  .life-head h2{font-size:clamp(30px, 4.5vw, 44px); margin:10px 0 6px; letter-spacing:-0.02em;}
+  .life-head p{color:var(--text-soft); margin:0;}
+  .gigs{list-style:none; margin:0; padding:0; display:grid; gap:10px;}
+  .gig{
+    display:grid; grid-template-columns:110px 1fr; gap:16px; align-items:start;
+    border:1px solid var(--border); background:var(--surface);
+    border-radius:14px; padding:16px 20px;
+  }
+  .gig .date{font-family:var(--font-mono); font-size:12px; color:var(--text-faint); padding-top:3px;}
+  .gig h3{font-size:18px; margin:0;}
+  .gig .venue{color:var(--text-soft); font-size:14.5px;}
+
+  footer{padding:60px 0 50px; text-align:center; color:var(--text-faint); font-family:var(--font-mono); font-size:12px;}
+  footer a{color:var(--accent);}
+
+  /* LIGHTBOX */
+  .lightbox{
+    position:fixed; inset:0; z-index:60;
+    display:none; place-items:center;
+    background:rgba(3,5,8,.88); backdrop-filter:blur(6px);
+    padding:24px; cursor:zoom-out;
+  }
+  .lightbox.open{display:grid;}
+  .lightbox img{max-width:min(1100px, 100%); max-height:88vh; border-radius:12px; object-fit:contain;}
+
+  .reveal{opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .6s ease;}
+  .reveal.in{opacity:1; transform:none;}
+
+  @media (max-width:760px){
+    .term{grid-template-columns:1fr; gap:18px; padding:34px 0;}
+    .term-label{position:static;}
+    .item{padding:20px;}
+    .gig{grid-template-columns:1fr; gap:4px;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .reveal{opacity:1; transform:none; transition:none;}
+    .now::before{animation:none;}
+  }
+</style>
+<script>
+  // apply the saved theme before the page paints (shared with index.html)
+  try { if (localStorage.getItem('theme') === 'light') document.documentElement.setAttribute('data-theme', 'light'); } catch (e) {}
+</script>
+</head>
+<body>
+<div class="glow a"></div>
+<div class="glow b"></div>
+
+<nav class="nav">
+  <a class="back" href="index.html">← Portfolio</a>
+  <button class="theme-toggle" id="themeToggle" aria-label="Switch light / dark mode">
+    <svg class="moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+    <svg class="sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v2.5M12 20v2.5M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M1.5 12H4M20 12h2.5M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8"/></svg>
+  </button>
+</nav>
+
+<main class="wrap">
+  <header>
+    <div class="kicker">// SUTD · 2025 — NOW</div>
+    <h1>University Journey</h1>
+    <p class="lede">
+      Term by term at SUTD: the class projects, contests and builds that didn't make the main page,
+      plus the basketball and music that fill the rest of the week.
+    </p>
+    <nav class="jump" id="jump" aria-label="Jump to"></nav>
+  </header>
+
+  <div id="terms"></div>
+  <div id="life"></div>
+</main>
+
+<footer>
+  © <span id="year"></span> Matthew Hema · <a href="index.html">Back to portfolio</a>
+</footer>
+
+<div class="lightbox" id="lightbox" aria-hidden="true"><img alt=""></div>
+
+<script>
+/* =========================================================
+   JOURNEY DATA — edit these lists to add / change entries.
+   photos: { id, n } loads journey_imgs/<id>-1.jpg … <id>-n.jpg;
+   video: '<path>.mp4' adds a playable clip; youtube: '<video id>' embeds a YouTube video;
+   any file that isn't there yet is simply skipped.
+   main: ids of projects shown on index.html (opens their popup).
+   ========================================================= */
+var TERMS = [
+  {
+    n: 'TERM 1', title: 'First steps', when: 'SEP — DEC 2025',
+    main: [['choosi', 'Choosi']],
+    items: [
+      {
+        title: 'Bubbacheap', date: 'Oct 2025',
+        text: 'A web app for a bubble tea and chips vending machine, built with Streamlit. It handles student-ID discounts and buying several drinks and snacks in one order. I helped build the website.',
+        tags: ['Python', 'Streamlit'],
+        video: 'images/bbcheap.mp4'
+      },
+      {
+        title: 'Design Thinking Project 1: Baymax Cannon', date: 'Nov 2025',
+        text: 'The challenge: a cannon that launches a ball into a basket, tuned by changing the pressure and launch angle. We themed ours on Baymax, linked to our Global Humanities module on supporting incarcerated people. When it fires, it releases a mist that stands for calm and care. I kicked off the design process and worked out the physics.',
+        award: 'Highest score in the class',
+        tags: ['Design thinking', 'Physics', 'Prototyping'],
+        link: { href: 'https://youtube.com/shorts/BaSrVfjJyis', text: 'Watch the launch ↗' },
+        photos: { id: 'dtp1', n: 6 }
+      },
+      {
+        title: 'FERWOWIE', date: 'Dec 2025',
+        text: 'A toy car powered by an elastic band. Five rounds of design iterations and modelling, with plenty of problems along the way, ended in a car that looks good and actually runs.',
+        tags: ['CAD', 'Iteration', 'Mechanisms'],
+        youtube: 'bhcsQFeYlno',
+        photos: { id: 'ferwowie', n: 1 }
+      }
+    ]
+  },
+  {
+    n: 'TERM 2', title: 'Circuits & signals', when: 'JAN — APR 2026',
+    main: [['edubin', 'EDUBin']],
+    items: [
+      {
+        title: 'Capacitor & Inductor', date: 'Apr 2026',
+        text: 'We designed and tuned our own capacitor and inductor, then calibrated the circuit to pick up radio signals with a software-defined radio (SDR).',
+        tags: ['Electronics', 'SDR', 'Calibration'],
+        photos: { id: 'capind', n: 5 }
+      }
+    ]
+  },
+  {
+    n: 'TERM 3', title: 'Code & build', when: 'MAY — AUG 2026',
+    main: [['cp-contest', 'CP Contest · 1st'], ['lazergraft', 'LazerGraft'], ['daycharge', 'DayCharge'], ['pressure-injury', 'Robotic Repositioning (DGIS)']],
+    items: [
+      {
+        title: 'Song Name Sorting', date: 'Term 3',
+        text: 'A Streamlit app that visualises and compares Shell Sort and an optimised Bubble Sort on song names, with a custom HTML interface. My first project using GitHub for team collaboration and version control.',
+        tags: ['Python', 'Streamlit', 'Algorithms', 'GitHub'],
+        photos: { id: 'songsort', n: 3 }
+      },
+      {
+        title: 'Math Challenge', date: 'Jun — Jul 2026',
+        text: 'A Streamlit game that generates maths challenges and checks answers written as postfix expressions. Scores go to a "Hall of Fame" leaderboard, handled with Pandas, that players can sort and filter.',
+        tags: ['Python', 'Streamlit', 'Pandas'],
+        photos: { id: 'mathchal', n: 3 }
+      },
+      {
+        title: 'Design Thinking Project 3: Solar Food Dryer', date: 'Jul 2026',
+        text: 'A solar-powered food dryer: sunlight heats air that flows through the food and draws out moisture to preserve it. I designed the chimney and base, and handled the data collection, graphs and results analysis.',
+        tags: ['Thermal design', 'CAD', 'Data analysis'],
+        photos: { id: 'fooddryer', n: 3 }
+      }
+    ]
+  }
+];
+
+var BASKETBALL = [
+  {
+    title: 'SUTD Sports Month 2026', date: 'Feb 2026',
+    award: 'Overall Champion · 30+ teams',
+    text: 'With team Prime across basketball, touch rugby, volleyball, badminton and laser tag. We went 15–3 and won SGD 7,500 in vouchers, and learned a lot about teamwork, communication and trusting each other.',
+    photos: { id: 'sportsmonth', n: 7 }
+  },
+  {
+    title: 'Supreme Youth Cup U23 2026', date: 'Feb — May 2026',
+    award: '1st Runner-up · Division 3 U23',
+    text: 'Named Player of the Game with 23 points and 6 rebounds.',
+    photos: { id: 'supreme', n: 3 }
+  },
+  {
+    title: 'Community Championship 2026 · 3x3 Men\'s Open', date: '23 May 2026',
+    award: '1st Runner-up · South East District',
+    photos: { id: 'community', n: 2 }
+  },
+  {
+    title: 'Pesta Sukan Basketball 2026', date: 'Jun — Jul 2026',
+    text: 'Played 3x3 Men\'s Open with SUTD: 1–1 in qualifiers, then 3–1 in the round of 16 and 4–1 in the community championship round of 8.',
+    photos: { id: 'pesta', n: 2 }
+  }
+];
+
+var GIGS = [
+  { title: 'Camp Rock', venue: '@ SUTD', date: 'Oct 2025' },
+  { title: 'Spookaloo Halloween', venue: '@ SUTD', date: 'Nov 2025' },
+  { title: 'Springheads', venue: 'with my band Chopped @ SUTD Auditorium', date: '13 Feb 2026', photos: { id: 'springheads', n: 2 } },
+  { title: 'Songkran Festival', venue: '@ Royal Thai Embassy', date: 'Mar 2026' },
+  { title: 'Summerocks', venue: 'with my band 999 MB @ SUTD MPH', date: '17 Jul 2026', photos: { id: 'summerocks', n: 2 } }
+];
+
+(function(){
+  "use strict";
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+
+  function photos(ph){
+    if (!ph) return '';
+    var out = '';
+    for (var i = 1; i <= ph.n; i++){
+      out += '<button type="button" aria-label="Open photo"><img src="journey_imgs/' + ph.id + '-' + i + '.jpg" alt="" loading="lazy" onerror="this.parentNode.remove()"></button>';
+    }
+    return '<div class="photos">' + out + '</div>';
+  }
+  function item(it){
+    return '<article class="item reveal">' +
+      '<div class="item-top"><h3>' + esc(it.title) + '</h3><span class="date">' + esc(it.date) + '</span></div>' +
+      (it.award ? '<div class="award">★ ' + esc(it.award) + '</div>' : '') +
+      (it.text ? '<p>' + esc(it.text) + '</p>' : '') +
+      (it.tags ? '<div class="tags">' + it.tags.map(function(t){ return '<span class="tag">' + esc(t) + '</span>'; }).join('') + '</div>' : '') +
+      (it.link ? '<a class="item-link" href="' + esc(it.link.href) + '" target="_blank" rel="noopener noreferrer">' + esc(it.link.text) + '</a>' : '') +
+      (it.youtube ? '<iframe class="clip yt" src="https://www.youtube-nocookie.com/embed/' + esc(it.youtube) + '?rel=0" title="' + esc(it.title) + ' video" ' +
+        'allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe>' : '') +
+      (it.video ? '<video class="clip" src="' + esc(it.video) + '" controls preload="metadata" playsinline></video>' : '') +
+      photos(it.photos) +
+    '</article>';
+  }
+
+  document.getElementById('terms').innerHTML = TERMS.map(function(t, i){
+    return '<section class="term" id="term-' + (i + 1) + '">' +
+      '<div class="term-label">' +
+        '<div class="n">' + esc(t.n) + '</div>' +
+        '<h2>' + esc(t.title) + '</h2>' +
+        '<div class="when">' + esc(t.when) + '</div>' +
+        (t.now ? '<div class="now">NOW</div>' : '') +
+      '</div>' +
+      '<div class="items">' +
+        t.items.map(item).join('') +
+        (t.main.length ? '<div class="also reveal"><span>ON THE MAIN PAGE →</span>' + t.main.map(function(m){
+          return '<a href="index.html#open-' + esc(m[0]) + '">' + esc(m[1]) + '</a>';
+        }).join('') + '</div>' : '') +
+      '</div>' +
+    '</section>';
+  }).join('');
+
+  document.getElementById('life').innerHTML =
+    '<div class="life-head reveal" id="basketball">' +
+      '<div class="kicker">// ON THE COURT</div><h2>Basketball</h2>' +
+      '<p>Most weeks you\'ll find me on a court, for SUTD and in community tournaments around Singapore.</p>' +
+    '</div>' +
+    '<section class="term"><div class="term-label"><div class="n">2026</div><h2>Results</h2></div>' +
+      '<div class="items">' + BASKETBALL.map(item).join('') + '</div></section>' +
+    '<div class="life-head reveal" id="music">' +
+      '<div class="kicker">// ON STAGE</div><h2>Music</h2>' +
+      '<p>I play guitar in band performances at SUTD and beyond.</p>' +
+    '</div>' +
+    '<section class="term"><div class="term-label"><div class="n">2025 — 2026</div><h2>Band shows</h2></div>' +
+      '<ul class="gigs">' + GIGS.map(function(g){
+        return '<li class="gig reveal"><div class="date">' + esc(g.date) + '</div><div>' +
+          '<h3>' + esc(g.title) + '</h3><div class="venue">' + esc(g.venue) + '</div>' + photos(g.photos) +
+        '</div></li>';
+      }).join('') + '</ul></section>';
+
+  var jumps = TERMS.map(function(t, i){ return ['#term-' + (i + 1), t.n.charAt(0) + t.n.slice(1).toLowerCase()]; })
+    .concat([['#basketball', 'Basketball'], ['#music', 'Music']]);
+  document.getElementById('jump').innerHTML = jumps.map(function(j){ return '<a href="' + j[0] + '">' + j[1] + '</a>'; }).join('');
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  /* ---- Lightbox ---- */
+  var lb = document.getElementById('lightbox');
+  var lbImg = lb.querySelector('img');
+  document.addEventListener('click', function(e){
+    var b = e.target.closest('.photos button');
+    if (b){
+      lbImg.src = b.querySelector('img').src;
+      lb.classList.add('open'); lb.setAttribute('aria-hidden', 'false');
+      return;
+    }
+    if (lb.classList.contains('open') && e.target.closest('#lightbox')){
+      lb.classList.remove('open'); lb.setAttribute('aria-hidden', 'true');
+    }
+  });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape') lb.classList.remove('open');
+  });
+
+  /* ---- Light / dark toggle (same saved setting as index.html) ---- */
+  document.getElementById('themeToggle').addEventListener('click', function(){
+    var root = document.documentElement;
+    var light = root.getAttribute('data-theme') !== 'light';
+    if (!reduceMotion){
+      root.classList.add('theme-anim');
+      setTimeout(function(){ root.classList.remove('theme-anim'); }, 400);
+    }
+    if (light) root.setAttribute('data-theme', 'light'); else root.removeAttribute('data-theme');
+    try { localStorage.setItem('theme', light ? 'light' : 'dark'); } catch (e) {}
+  });
+
+  /* ---- Reveal on scroll ---- */
+  var revealEls = document.querySelectorAll('.reveal');
+  if (reduceMotion || !('IntersectionObserver' in window)){
+    revealEls.forEach(function(el){ el.classList.add('in'); });
+  } else {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){ if (en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } });
+    }, { threshold: 0.12 });
+    revealEls.forEach(function(el){ io.observe(el); });
+  }
+})();
+</script>
+</body>
+</html>

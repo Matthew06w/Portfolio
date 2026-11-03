@@ -23,6 +23,10 @@
     --accent-2:#7C6CFF;
     --accent-glow:rgba(63,208,255,0.35);
     --warm:#FFB547;
+    --nav-bg:rgba(7,9,13,0.65);
+    --media-bg:#000;
+    --media-bg-2:#05070A;
+    --glow-opacity:1;
 
     --font-head:'Space Grotesk', system-ui, sans-serif;
     --font-mono:'JetBrains Mono', ui-monospace, monospace;
@@ -73,7 +77,7 @@
     z-index:50;
     backdrop-filter:blur(14px);
     -webkit-backdrop-filter:blur(14px);
-    background:rgba(7,9,13,0.65);
+    background:var(--nav-bg);
     border-bottom:1px solid transparent;
     transition:border-color .3s ease;
   }
@@ -309,7 +313,7 @@
   }
   .featured-media{
     position:relative;
-    background:#000;
+    background:var(--media-bg);
     min-height:420px;
   }
   .featured-media .fm{
@@ -425,7 +429,7 @@
     position:relative;
     aspect-ratio:16/10;
     overflow:hidden;
-    background:#000;
+    background:var(--media-bg);
   }
   .card-media img{
     width:100%; height:100%;
@@ -444,7 +448,7 @@
   .card-media::after{
     content:"";
     position:absolute; inset:0;
-    background:linear-gradient(180deg, transparent 50%, rgba(18,24,35,.95) 100%);
+    background:linear-gradient(180deg, transparent 50%, color-mix(in srgb, var(--surface) 95%, transparent) 100%);
   }
   .card-type{
     position:absolute; top:12px; left:12px; z-index:1;
@@ -543,12 +547,12 @@
   }
   .modal-close:hover{border-color:var(--accent); color:var(--accent);}
   .modal-grid{display:grid; grid-template-columns:1.15fr 1fr;}
-  .modal-gallery{padding:16px; background:#000; border-radius:22px 0 0 22px;}
+  .modal-gallery{padding:16px; background:var(--media-bg); border-radius:22px 0 0 22px;}
   .modal-main{
     aspect-ratio:4/3;
     border-radius:12px;
     overflow:hidden;
-    background:#05070A;
+    background:var(--media-bg-2);
   }
   .modal-main img{width:100%; height:100%; object-fit:contain;}
   .modal-main iframe{width:100%; height:100%; border:0; display:block;}
@@ -587,11 +591,14 @@
     width:84px; aspect-ratio:4/3;
     border-radius:8px; overflow:hidden;
     border:2px solid transparent;
-    padding:0; background:#05070A;
+    padding:0; background:var(--media-bg-2);
     cursor:pointer; opacity:.55;
     transition:opacity .2s, border-color .2s;
   }
   .thumb img{width:100%; height:100%; object-fit:cover;}
+  .thumb-text{display:grid; place-items:center; height:100%; font-family:var(--font-mono); font-size:11px; color:var(--text-soft);}
+  /* slide decks are 16:9, so drop the 4:3 frame when one is showing */
+  .modal-main:has(iframe){aspect-ratio:16/9;}
   .thumb.active, .thumb:hover{opacity:1; border-color:var(--accent);}
   .thumb-label{font-family:var(--font-mono); font-size:11px; color:var(--text-faint); margin-top:8px;}
   .modal-info{padding:36px 34px 34px;}
@@ -809,16 +816,52 @@
   .hobby .h-tag{font-family:var(--font-mono); font-size:12px; color:var(--warm); letter-spacing:.06em;}
   .hobby h3{font-size:22px; margin:8px 0 10px;}
   .hobby p{color:var(--text-soft); margin:0;}
+  /* sits beside the guitar card: text on top, ridge drawing below */
   .hike-card{
-    grid-column:1 / -1;
-    display:grid; grid-template-columns:1fr 1.2fr; gap:24px; align-items:center;
+    display:flex; flex-direction:column; justify-content:space-between; gap:18px;
     text-decoration:none; color:inherit;
     transition:border-color .3s, transform .3s;
   }
   .hike-card:hover{border-color:var(--accent); transform:translateY(-3px);}
   .hike-cta{display:inline-block; margin-top:14px; color:var(--accent); font-weight:600;}
-  .hike-ridge{width:100%; height:120px; display:block;}
-  @media (max-width:640px){ .hike-card{grid-template-columns:1fr;} }
+  .hike-ridge{width:100%; height:90px; display:block;}
+
+  /* LEADERSHIP & CLUBS */
+  .clubs{grid-column:1 / -1;}
+  .club-list{
+    list-style:none; margin:18px 0 0; padding:0;
+    display:grid; grid-template-columns:1fr 1fr; gap:12px;
+  }
+  .club{
+    display:flex; gap:16px; align-items:flex-start;
+    border:1px solid var(--border);
+    background:var(--bg-2);
+    border-radius:14px;
+    padding:18px;
+    transition:border-color .3s;
+  }
+  .club:hover{border-color:var(--border-strong);}
+  /* round, like the clubs' Instagram profile pictures */
+  .club-logo{
+    flex:none; position:relative;
+    width:60px; height:60px; border-radius:50%;
+    background:#fff;
+    display:grid; place-items:center;
+    overflow:hidden;
+    box-shadow:0 0 0 2px var(--border-strong);
+  }
+  .club-logo img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:1;}
+  .club-logo img + span{visibility:hidden;}
+  .club-logo span{font-family:var(--font-mono); font-weight:700; font-size:14px; color:#111;}
+  .club-body{min-width:0; flex:1;}
+  .club-top{display:flex; justify-content:space-between; align-items:baseline; gap:10px;}
+  .club h4{font-size:17px; margin:0; line-height:1.25;}
+  .club-years{flex:none; font-family:var(--font-mono); font-size:11.5px; color:var(--text-faint);}
+  .club-role{color:var(--accent); font-size:13.5px; font-weight:500; margin:3px 0 6px;}
+  .club p{font-size:14.5px;}
+  .club-link{display:inline-block; margin-top:8px; font-size:13.5px; font-weight:600; color:var(--accent); text-decoration:none;}
+  .club-link:hover{text-decoration:underline;}
+  @media (max-width:720px){ .club-list{grid-template-columns:1fr;} }
 
   /* CONTACT */
   .contact{
@@ -873,7 +916,88 @@
     .reveal{opacity:1; transform:none;}
     html{scroll-behavior:auto;}
   }
+
+  /* ===== LIGHT GREEN ACCENT — delete this whole block to go back to cyan + purple ===== */
+  :root{
+    --lime:#B6F36A;
+    --lime-soft:rgba(182,243,106,.10);
+    --lime-line:rgba(182,243,106,.35);
+    --accent-2:var(--lime);          /* name gradient, background glow, education line */
+  }
+  .glow.b{opacity:.10;}
+  .featured::before{
+    background:linear-gradient(130deg, rgba(63,208,255,.6), transparent 40%, transparent 60%, rgba(182,243,106,.55));
+  }
+  .sec-kicker{color:var(--lime);}
+  .stat .num span{color:var(--lime);}
+  .filter.active{background:var(--lime); border-color:var(--lime); color:#0B1404;}
+  .skill-icon{color:var(--lime); background:var(--lime-soft); border-color:var(--lime-line);}
+  .skill-card::before{background:var(--lime);}
+  .featured-badge{color:var(--lime); border-color:var(--lime-line); background:var(--lime-soft);}
+  .card:hover .card-arrow{background:var(--lime); border-color:var(--lime); color:#0B1404;}
+  .hobby .h-tag{color:var(--lime);}
+  ::selection{background:var(--lime); color:#0B1404;}
+  /* ===== end light green accent ===== */
+
+  /* ===== LIGHT MODE — toggled by the ☀/☾ button, saved per visitor ===== */
+  :root[data-theme="light"]{
+    --bg:#F5F7FA;
+    --bg-2:#EDF1F6;
+    --surface:#FFFFFF;
+    --surface-2:#F2F5F9;
+    --border:#DDE3EB;
+    --border-strong:#C4CEDA;
+    --text:#0E141C;
+    --text-soft:#4A5668;
+    --text-faint:#7A8698;
+    --accent:#0284C7;
+    --accent-glow:rgba(2,132,199,0.22);
+    --warm:#B86A00;
+    --lime:#4C9A0E;
+    --lime-soft:rgba(76,154,14,.09);
+    --lime-line:rgba(76,154,14,.35);
+    --nav-bg:rgba(245,247,250,0.75);
+    --media-bg:#E9EEF4;
+    --media-bg-2:#F1F4F8;
+    color-scheme:light;
+  }
+  [data-theme="light"] .glow{opacity:.12;}
+  /* labels sitting on top of project images: light pill, dark text */
+  [data-theme="light"] .card-type,
+  [data-theme="light"] .card-video,
+  [data-theme="light"] .media-tab,
+  [data-theme="light"] .modal-close{background:rgba(255,255,255,.88); color:var(--text); border-color:var(--border);}
+  [data-theme="light"] .media-tab.active{color:#fff; background:var(--accent); border-color:var(--accent);}
+  [data-theme="light"] .card-award{color:#fff; box-shadow:0 2px 10px rgba(184,106,0,.3);}
+  [data-theme="light"] .featured::before{
+    background:linear-gradient(130deg, rgba(2,132,199,.55), transparent 40%, transparent 60%, rgba(76,154,14,.5));
+  }
+  [data-theme="light"] .card:hover,
+  [data-theme="light"] .card:focus-visible{box-shadow:0 18px 40px rgba(15,30,50,.12);}
+  [data-theme="light"] .feed{box-shadow:0 30px 70px rgba(15,30,50,.15);}
+  [data-theme="light"] .modal-panel{box-shadow:0 40px 100px rgba(15,30,50,.25);}
+  [data-theme="light"] .chip.award{border-color:rgba(184,106,0,.35); background:rgba(184,106,0,.07);}
+
+  .theme-toggle{
+    width:38px; height:38px; margin-left:6px;
+    border-radius:50%;
+    border:1px solid var(--border-strong);
+    background:var(--surface);
+    color:var(--text);
+    display:grid; place-items:center;
+    cursor:pointer;
+    transition:border-color .2s, transform .3s;
+  }
+  .theme-toggle:hover{border-color:var(--accent); transform:rotate(-20deg);}
+  .theme-toggle .sun{display:none;}
+  [data-theme="light"] .theme-toggle .sun{display:block;}
+  [data-theme="light"] .theme-toggle .moon{display:none;}
+  html.theme-anim, html.theme-anim *{transition:background-color .35s ease, border-color .35s ease, color .35s ease !important;}
 </style>
+<script>
+  // apply the saved theme before the page paints (avoids a dark flash)
+  try { if (localStorage.getItem('theme') === 'light') document.documentElement.setAttribute('data-theme', 'light'); } catch (e) {}
+</script>
 </head>
 <body>
 
@@ -886,12 +1010,17 @@
   <div class="wrap nav-inner">
     <a href="#top" class="logo"><span class="logo-mark">MH</span>matthew.hema</a>
     <div class="nav-links">
-      <a href="#work" class="keep">Work</a>
+      <a href="#projects" class="keep">Projects</a>
       <a href="#experience">Experience</a>
       <a href="#education">Education</a>
       <a href="#skills">Skills</a>
       <a href="#about">About</a>
+      <a href="journey.html">Journey</a>
       <a href="#contact" class="keep">Contact</a>
+      <button class="theme-toggle" id="themeToggle" aria-label="Switch light / dark mode">
+        <svg class="moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        <svg class="sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v2.5M12 20v2.5M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M1.5 12H4M20 12h2.5M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8"/></svg>
+      </button>
     </div>
   </div>
 </nav>
@@ -910,13 +1039,13 @@
         medical imaging research, and always keen to learn new tools and technologies.
       </p>
       <div class="btn-row">
-        <a href="#work" class="btn primary">View projects
+        <a href="#projects" class="btn primary">View projects
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </a>
         <a href="#contact" class="btn">Get in touch</a>
       </div>
       <div class="stats">
-        <div class="stat"><div class="num" data-count="7">0</div><div class="lbl">PROJECTS</div></div>
+        <div class="stat"><div class="num" data-count="10">0</div><div class="lbl">PROJECTS</div></div>
         <div class="stat"><div class="num">CV<span>+</span>HW</div><div class="lbl">AI MEETS HARDWARE</div></div>
       </div>
     </div>
@@ -944,9 +1073,9 @@
   </header>
 
   <!-- FEATURED + WORK -->
-  <section id="work">
+  <section id="projects">
     <div class="sec-head reveal">
-      <div class="sec-kicker">// 01 — SELECTED WORK</div>
+      <div class="sec-kicker">// 01 — SELECTED PROJECTS</div>
       <h2 class="sec-title">Things I've built</h2>
       <p class="sec-sub">From AI-powered recycling bins to solar bike lights. Click any project to see the full breakdown.</p>
     </div>
@@ -1030,6 +1159,13 @@
               <span class="chip award">★ ASEAN Scholarship</span>
               <span class="chip">Singapore</span>
             </div>
+          </div>
+        </div>
+        <div class="edu-sub">
+          <div>
+            <div class="edu-years">SEP — DEC 2026 · 1 TERM <span class="now"><span class="pulse"></span>NOW</span></div>
+            <h4>DIVE Global Immersions 1-Term Programme (DGIT)</h4>
+            <div class="edu-school">Zhejiang University, Zhejiang, China</div>
           </div>
         </div>
         <a class="edu-sub" href="https://myjourney.sutd.edu.sg/c/mMgiDWONBLX-mNFSEzcjD/" target="_blank" rel="noopener noreferrer">
@@ -1143,24 +1279,62 @@
       <h2 class="sec-title">When I'm not building</h2>
     </div>
     <div class="about-grid">
-      <div class="hobby reveal">
-        <div class="h-tag">EVENTS</div>
-        <h3>Community sports organizing</h3>
-        <p>
-          I like putting sports events together as much as playing in them. I helped
-          run a 3v3 women's basketball tournament, handling social media promotion,
-          creative assets and captions alongside the logistics of the day.
-        </p>
+      <!-- LEADERSHIP & CLUBS — logos: put the file in images/ and set the <img> src;
+           the initials show until the file exists -->
+      <div class="hobby clubs reveal">
+        <div class="h-tag">LEADERSHIP &amp; CLUBS</div>
+        <h3>Clubs I run and help run</h3>
+        <ul class="club-list">
+          <li class="club">
+            <div class="club-logo"><img src="images/club-sutd-basketball.png" alt="" onerror="this.remove()"><span>SB</span></div>
+            <div class="club-body">
+              <div class="club-top"><h4>SUTD Basketball</h4><span class="club-years">2026/27</span></div>
+              <div class="club-role">Public Relations</div>
+              <p>Design the club's posters and shirts.</p>
+              <a class="club-link" href="https://www.instagram.com/sutdbasketball/" target="_blank" rel="noopener noreferrer">Instagram →</a>
+            </div>
+          </li>
+          <li class="club">
+            <div class="club-logo"><img src="images/club-atsis.png" alt="" onerror="this.remove()"><span>AT</span></div>
+            <div class="club-body">
+              <div class="club-top"><h4>ATSIS</h4><span class="club-years">2026/27</span></div>
+              <div class="club-role">Public Relations · Association of Thai Students in Singapore</div>
+              <p>Make posters and promote events to bring people in.</p>
+              <a class="club-link" href="https://www.instagram.com/atsis.th/" target="_blank" rel="noopener noreferrer">Instagram →</a>
+            </div>
+          </li>
+          <li class="club">
+            <div class="club-logo"><img src="images/club-beauty-of-thai.png" alt="" onerror="this.remove()"><span>BT</span></div>
+            <div class="club-body">
+              <div class="club-top"><h4>Beauty of Thai Interest Group</h4><span class="club-years">2026/27</span></div>
+              <div class="club-role">Treasurer</div>
+              <p>We run events at SUTD for anyone interested in Thai culture.</p>
+              <a class="club-link" href="https://www.instagram.com/beautyofthai.sutd/" target="_blank" rel="noopener noreferrer">Instagram →</a>
+            </div>
+          </li>
+          <li class="club">
+            <div class="club-logo"><img src="images/club-mwit-basketball.png" alt="" onerror="this.remove()"><span>MB</span></div>
+            <div class="club-body">
+              <div class="club-top"><h4>MWIT Basketball Academy</h4><span class="club-years">2023/24</span></div>
+              <div class="club-role">Founder</div>
+              <p>Started and ran my own basketball club at Mahidol Wittayanusorn School.</p>
+              <a class="club-link" href="https://www.instagram.com/mwit.basketball/" target="_blank" rel="noopener noreferrer">Instagram →</a>
+            </div>
+          </li>
+        </ul>
       </div>
-      <div class="hobby reveal">
-        <div class="h-tag">CREATE</div>
-        <h3>Guitar &amp; videography</h3>
-        <p>
-          I play guitar and shoot video, skills that carry over into content creation
-          for the SUTD Basketball Club and the Association of Thai Students in Singapore,
-          where I handle social media and promotional publications.
-        </p>
-      </div>
+      <a class="hobby hike-card reveal" href="journey.html#life">
+        <div>
+          <div class="h-tag">CREATE &amp; COMPETE</div>
+          <h3>Guitar &amp; basketball</h3>
+          <p>
+            I play guitar in band shows at SUTD and compete in basketball, from
+            Sports Month champions to 3x3 community tournaments. I also shoot video,
+            which I use for posters, merch and club content.
+          </p>
+          <span class="hike-cta">See my University Journey →</span>
+        </div>
+      </a>
       <a class="hobby hike-card reveal" href="hiking.html">
         <div>
           <div class="h-tag">EXPLORE</div>
@@ -1234,15 +1408,16 @@
    and remove `placeholder: true` from the template entry.
    tags must use the names in FILTERS below.
    ========================================================= */
-var FILTERS = ['AI / CV', 'Hardware', 'Research'];
+var FILTERS = ['AI / CV', 'Hardware', 'Software', 'Research'];
 
 var PROJECTS = [
   {
     id: 'edubin',
+    date: '2026-03', // YYYY-MM, used to sort the grid newest first
     featured: true,
     title: 'EDUBin',
     subtitle: 'AI-Powered Recycling Educational Tool',
-    type: 'Group project · 2026',
+    type: 'Group project · Oct 2025 – Mar 2026',
     tags: ['AI / CV', 'Hardware'],
     images: [
       { src: 'images/edu1.jpg', label: 'Poster' },
@@ -1264,11 +1439,15 @@ var PROJECTS = [
   },
   {
     id: 'lazergraft',
+    date: '2026-07',
     title: 'LazerGraft',
     subtitle: 'Mid-air drawing with just a webcam',
-    type: 'Personal project · 2026',
+    type: 'Personal project · Jul 2026',
     tags: ['AI / CV'],
-    images: [{ src: 'images/CV.gif', label: 'Live demo' }],
+    images: [
+      { src: 'images/CV.gif', label: 'Live demo' },
+      { src: 'images/lazergraft-1.jpg', label: 'How it works' }
+    ],
     desc: [
       'A real-time computer vision tool that turns a webcam into a mid-air drawing surface, replicating the "light board" effect used by online educators, with no touchscreen or tablet required.',
       'Hand-landmark tracking is handled with MediaPipe, and strokes are rendered live with OpenCV as the hand moves through the frame, translating fingertip position directly into on-screen ink.'
@@ -1279,17 +1458,21 @@ var PROJECTS = [
       ['My role', 'Hand tracking, stroke rendering and real-time interaction'],
       ['Software', 'MediaPipe, OpenCV, Python'],
       ['Techniques', 'Hand landmark tracking, fingertip position mapping']
-    ]
+    ],
+    link: { href: 'https://github.com/Matthew06w/LazerGraph', text: 'View the code on GitHub' }
   },
   {
     id: 'daycharge',
+    date: '2026-08',
     title: 'DayCharge',
     subtitle: 'Solar-cell bicycle light',
-    type: 'Team project · 2026',
+    type: 'Team project · Aug 2026',
     tags: ['Hardware'],
     images: [
       { src: 'images/Bicycle%20Light%201.png', label: 'Prototype' },
-      { src: 'images/Bicycle%20Light%202.png', label: 'Electronics' }
+      { src: 'images/Bicycle%20Light%202.png', label: 'Electronics' },
+      { src: 'images/daycharge-2.jpg', label: 'Circuit' },
+      { src: 'images/daycharge-1.jpg', label: 'On the road' }
     ],
     desc: [
       'A bicycle light rebuilt around a salvaged LED circuit board into a self-charging solar power system. I integrated a solar panel and a TP4056 charging module into the salvaged electronics so the light tops itself up continuously during the day.',
@@ -1305,11 +1488,16 @@ var PROJECTS = [
   },
   {
     id: 'sign-language',
+    date: '2025-01',
     title: 'Sign Language Translator',
     subtitle: 'Real-time gesture-to-Thai translation with LSTM',
     type: 'Research Assistant, KMUTT · 2024–2025',
     tags: ['AI / CV', 'Research'],
-    images: [{ src: 'images/LSTM.gif', label: 'Live demo' }],
+    images: [
+      { src: 'images/LSTM.gif', label: 'Live demo' },
+      { embed: 'pdf/LSTM-Based%20Sign%20Language%20Recognition%20Presentation.pdf#view=FitH', label: 'Slides (PDF)' }
+    ],
+    link: { href: 'pdf/LSTM-Based%20Sign%20Language%20Recognition%20Presentation.pdf', text: 'Open the presentation (PDF)' },
     desc: [
       'A real-time system that translates hand gestures into text and spoken Thai. I collected my own gesture data, extracted hand landmarks with MediaPipe, and trained an LSTM network to recognise three gestures from their movement over time.',
       'The model runs inside a web application that shows the recognised gesture on screen and speaks it aloud in Thai.'
@@ -1324,13 +1512,15 @@ var PROJECTS = [
   },
   {
     id: 'mri-dementia',
+    date: '2025-01',
     title: 'MRI Dementia Classification',
     subtitle: 'Custom CNN vs. VGG16 on brain MRI scans',
     type: 'Research Assistant, KMUTT · 2024–2025',
     tags: ['AI / CV', 'Research'],
     images: [
       { src: 'images/BCC.png', label: 'Summary' },
-      { src: 'images/BCC2.png', label: 'More' }
+      { src: 'images/BCC2.png', label: 'More' },
+      { embed: 'https://www.canva.com/design/DAGUwOMTLv0/kUFyMlSo898Z0EUV8bwBTQ/view?embed', label: 'Slides' }
     ],
     desc: [
       'A comparison of a custom CNN and a VGG16 transfer-learning model for classifying dementia stages from brain MRI scans. VGG16 outperformed on the test set, especially on the Very Mild Demented class.',
@@ -1350,6 +1540,7 @@ var PROJECTS = [
   },
   {
     id: 'ion-detector',
+    date: '2024-03',
     title: 'Low-Cost Ion Detector',
     subtitle: '2-in-1 apparatus for nitrate & phosphate detection in soil and water',
     type: 'Team project · March 2024',
@@ -1389,6 +1580,7 @@ var PROJECTS = [
   },
   {
     id: 'verdian-02',
+    date: '2024-09',
     title: 'VERDIAN-02',
     subtitle: 'Vegetation Remote Detection and Integrated Agricultural Navigation',
     type: 'Team project · Sep 2024',
@@ -1397,7 +1589,10 @@ var PROJECTS = [
     images: [
       { src: 'images/vd1.png', label: 'Photo 1' },
       { src: 'images/vd2.png', label: 'Photo 2' },
-      { src: 'images/vd3.png', label: 'Photo 3' }
+      { src: 'images/vd3.png', label: 'Photo 3' },
+      { src: 'images/vd4.png', label: 'Photo 4' },
+      { src: 'images/vd5.png', label: 'Photo 5' },
+      { embed: 'https://www.canva.com/design/DAGdoitsXr4/win51pYGwE_PpIDshC8FaQ/view?embed', label: 'Slides' }
     ],
     desc: [
       'A CubeSat concept designed to monitor crops and environmental conditions remotely from orbit.',
@@ -1408,11 +1603,87 @@ var PROJECTS = [
       ['Goal', 'Remote monitoring of crops and environmental conditions with a CubeSat'],
       ['My role', 'CubeSat design, pitching and presentation'],
       ['Result', 'Won the competition; built a CubeSat with GISTDA in a clean room (2 weeks)']
+    ],
+    link: { href: 'https://www.canva.com/design/DAGdoitsXr4/win51pYGwE_PpIDshC8FaQ/view', text: 'Open slides in Canva' }
+  },
+  {
+    id: 'pressure-injury',
+    date: '2026-08',
+    title: 'Robotic Repositioning System',
+    subtitle: 'For pressure-injury prevention',
+    type: 'Team project · Aug 2026',
+    tags: ['Hardware'],
+    // { embed: '<url>' } shows any embeddable page (here, Canva slides)
+    images: [
+      { src: 'images/Dgis1.png', label: 'Photo 1' },
+      { src: 'images/Dgis2.png', label: 'Photo 2' },
+      { src: 'images/Dgis3.png', label: 'Photo 3' },
+      { embed: 'https://www.canva.com/design/DAHTQviyh8I/zbzo2sDvzLsDDtQVrHEeyQ/view?embed', label: 'Slides' }
+    ],
+    desc: [
+      'A robotic system that repositions patients to help prevent pressure injuries.',
+      'Proposed to Chongqing University during the DGIS 2026 exchange programme.'
+    ],
+    specs: [
+      ['Project type', 'Team project, DGIS 2026 proposal'],
+      ['Goal', 'Prevent pressure injuries by repositioning patients automatically'],
+      ['Presented at', 'Chongqing University, China']
+    ],
+    link: { href: 'https://www.canva.com/design/DAHTQviyh8I/zbzo2sDvzLsDDtQVrHEeyQ/view', text: 'Open slides in Canva' }
+  },
+  {
+    id: 'cp-contest',
+    date: '2026-07',
+    title: 'SUTD Competitive Programming Contest',
+    subtitle: '1st place out of 70+ teams',
+    type: 'Team of 2 · 4 Jul 2026',
+    tags: ['Software'],
+    badge: '1st Place',
+    images: [
+      { src: 'images/cp-1.jpg', label: 'Winners' },
+      { src: 'images/cp-2.jpg', label: 'Gold Award' },
+      { src: 'images/cp-3.jpg', label: 'Best Freshmore Team' },
+      { src: 'images/cp-4.jpg', label: 'First to solve A, B & F' },
+      { src: 'images/cp-5.jpg', label: 'Final scoreboard' },
+      { src: 'images/cp-6.jpg', label: 'All contestants' }
+    ],
+    results: [['1st', 'of 70+ teams'], ['9 / 10', 'problems solved'], ['3', 'problems solved first']],
+    awards: ['Gold Award, contest winner', 'Best Freshmore Team', 'First to solve problems A, B & F'],
+    desc: [
+      'A timed algorithm contest at SUTD. My teammate and I competed as team CK FASTCODE.',
+      'We solved 9 of the 10 problems, were the first team to crack 3 of them, and took 1st place out of more than 70 teams.'
+    ],
+    specs: [
+      ['Project type', 'Competition, team of 2 (CK FASTCODE)'],
+      ['Result', '1st place, 9/10 solved, 3 first solves']
+    ]
+  },
+  {
+    id: 'choosi',
+    date: '2025-09',
+    title: 'Choosi',
+    subtitle: 'AI app that helps you choose based on your own values',
+    type: 'Team project · Sep 2025',
+    tags: ['Software'],
+    images: [
+      { src: 'images/choosi-1.jpg', label: 'Hackathon pitch' },
+      { embed: 'https://www.canva.com/design/DAGzzh6lwzY/XyNNFYvvtIBH3dvoZP8X4g/view?embed', label: 'Slides' }
+    ],
+    link: { href: 'https://www.canva.com/design/DAGzzh6lwzY/XyNNFYvvtIBH3dvoZP8X4g/view', text: 'Open slides in Canva' },
+    desc: [
+      'An AI-powered decision-making app that helps people make everyday choices based on their own values and priorities. Built at the SEVEN MVP Hackathon.',
+      'We didn\'t win a prize, but it was my first university project and great hands-on practice in building an app as a team.'
+    ],
+    specs: [
+      ['Project type', 'Team project, SEVEN MVP Hackathon'],
+      ['Goal', 'Help users make everyday choices based on their personal values'],
+      ['My role', 'UI design and coding']
     ]
   },
   {
     // TEMPLATE — fill this in for your next project, then delete `placeholder: true`
     id: 'project-7',
+    date: '[YYYY-MM]',
     placeholder: true,
     title: '[Project Title]',
     subtitle: '[Short subtitle]',
@@ -1441,13 +1712,18 @@ var PROJECTS = [
     'referrerpolicy="strict-origin-when-cross-origin" allowfullscreen';
   function ytThumb(id){ return 'https://i.ytimg.com/vi/' + id + '/hqdefault.jpg'; }
   function thumbSrc(m){ return m.youtube ? ytThumb(m.youtube) : m.src; }
+  var EMBED_ATTRS = 'allow="fullscreen" allowfullscreen loading="lazy"';
+  function thumbInner(m){ return m.embed ? '<span class="thumb-text">SLIDES</span>' : '<img src="' + thumbSrc(m) + '" alt="">'; }
   // card cover: first real image, falling back to the video thumbnail
   function coverSrc(p){
     var img = p.images.filter(function(m){ return m.src; })[0];
-    return img ? img.src : p.images.length ? thumbSrc(p.images[0]) : null;
+    var vid = p.images.filter(function(m){ return m.youtube; })[0];
+    return img ? img.src : vid ? ytThumb(vid.youtube) : null;
   }
   // shown when a project has no photos yet
   var NO_MEDIA = '<div class="no-media"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>Photos coming soon</span></div>';
+  // card cover for a project whose only media is a slide deck
+  var SLIDES_COVER = '<div class="no-media"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M12 17v4M8 21h8"/></svg><span>Presentation inside</span></div>';
   var ARROW = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
 
   document.getElementById('year').textContent = new Date().getFullYear();
@@ -1510,7 +1786,10 @@ var PROJECTS = [
   }).join('');
 
   // featured project also appears in the grid when a filter (not "All") is active
-  var cardSource = PROJECTS.slice().sort(function(a, b){ return (a.placeholder ? 1 : 0) - (b.placeholder ? 1 : 0); });
+  // newest first by `date` (a year-only date sorts after that year's dated months); placeholder last
+  var cardSource = PROJECTS.slice().sort(function(a, b){
+    return (a.placeholder ? 1 : 0) - (b.placeholder ? 1 : 0) || (b.date || '').localeCompare(a.date || '');
+  });
   grid.innerHTML = cardSource.map(function(p){
     if (p.placeholder){
       return '<div class="card placeholder reveal" data-tags="">' +
@@ -1519,8 +1798,10 @@ var PROJECTS = [
     return '<button class="card reveal' + (p.featured ? ' is-featured hide' : '') + '" data-open="' + p.id + '" data-tags="' + esc(p.tags.join('|')) + '">' +
       '<div class="card-media"><span class="card-type">' + esc(p.type) + '</span>' +
         (p.badge ? '<span class="card-award">★ ' + esc(p.badge) + '</span>' : '') +
-        (p.images.some(function(m){ return m.youtube; }) ? '<span class="card-video">▶ Video</span>' : '') +
-        (coverSrc(p) ? '<img src="' + coverSrc(p) + '" alt="' + esc(p.title) + '" loading="lazy">' : NO_MEDIA) + '</div>' +
+        (p.images.some(function(m){ return m.youtube; }) ? '<span class="card-video">▶ Video</span>'
+          : p.images.some(function(m){ return m.embed; }) ? '<span class="card-video">▣ Slides</span>' : '') +
+        (coverSrc(p) ? '<img src="' + coverSrc(p) + '" alt="' + esc(p.title) + '" loading="lazy">'
+          : p.images.some(function(m){ return m.embed; }) ? SLIDES_COVER : NO_MEDIA) + '</div>' +
       '<div class="card-body">' +
         '<h3>' + esc(p.title) + '</h3>' +
         '<p class="card-sub">' + esc(p.subtitle) + '</p>' +
@@ -1555,7 +1836,9 @@ var PROJECTS = [
     if (!m){ mMain.innerHTML = NO_MEDIA; mImgLabel.textContent = ''; return; }
     mMain.innerHTML = m.youtube
       ? '<iframe src="' + ytEmbed(m.youtube) + '" title="' + esc(p.title + ' — ' + m.label) + '" ' + YT_ATTRS + '></iframe>'
-      : '<img src="' + m.src + '" alt="' + esc(p.title + ' — ' + m.label) + '">';
+      : m.embed
+        ? '<iframe src="' + esc(m.embed) + '" title="' + esc(p.title + ' — ' + m.label) + '" ' + EMBED_ATTRS + '></iframe>'
+        : '<img src="' + m.src + '" alt="' + esc(p.title + ' — ' + m.label) + '">';
     mImgLabel.textContent = p.images.length > 1 ? (i + 1) + ' / ' + p.images.length + ' — ' + p.images[i].label : p.images[i].label;
     mThumbs.querySelectorAll('.thumb').forEach(function(t, j){ t.classList.toggle('active', j === i); });
   }
@@ -1584,7 +1867,7 @@ var PROJECTS = [
       ? '<a class="m-link" href="' + esc(p.link.href) + '" target="_blank" rel="noopener noreferrer">' + esc(p.link.text) + ' ' + ARROW + '</a>'
       : '';
     mThumbs.innerHTML = p.images.length > 1 ? p.images.map(function(im, i){
-      return '<button class="thumb' + (im.youtube ? ' is-video' : '') + '" data-i="' + i + '" aria-label="' + esc(im.label) + '"><img src="' + thumbSrc(im) + '" alt=""></button>';
+      return '<button class="thumb' + (im.youtube ? ' is-video' : '') + '" data-i="' + i + '" aria-label="' + esc(im.label) + '">' + thumbInner(im) + '</button>';
     }).join('') : '';
     mThumbs.onclick = function(e){
       var t = e.target.closest('.thumb');
@@ -1613,6 +1896,11 @@ var PROJECTS = [
   document.addEventListener('keydown', function(e){
     if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
   });
+  // index.html#open-<id> (used by journey.html) opens that project's popup
+  if (location.hash.indexOf('#open-') === 0){
+    document.getElementById('projects').scrollIntoView();
+    openModal(location.hash.slice(6));
+  }
 
   /* ---- Typing effect ---- */
   var phrases = ['building AI-integrated hardware', 'training computer vision models', 'designing enclosures in CAD', 'wiring up electronics'];
@@ -1684,6 +1972,27 @@ var PROJECTS = [
   var dpr = Math.min(window.devicePixelRatio || 1, 2);
   var mouse = { x: -9999, y: -9999 };
   var GAP = 34;
+  var dotHi, dotBase;
+  function setDotColours(){
+    var light = document.documentElement.getAttribute('data-theme') === 'light';
+    dotHi = light ? '2,132,199' : '63,208,255';
+    dotBase = light ? 'rgba(60,80,110,0.14)' : 'rgba(120,140,170,0.12)';
+  }
+  setDotColours();
+
+  /* ---- Light / dark toggle ---- */
+  document.getElementById('themeToggle').addEventListener('click', function(){
+    var root = document.documentElement;
+    var light = root.getAttribute('data-theme') !== 'light';
+    if (!reduceMotion){
+      root.classList.add('theme-anim');
+      setTimeout(function(){ root.classList.remove('theme-anim'); }, 400);
+    }
+    if (light) root.setAttribute('data-theme', 'light'); else root.removeAttribute('data-theme');
+    try { localStorage.setItem('theme', light ? 'light' : 'dark'); } catch (e) {}
+    setDotColours();
+    draw();
+  });
 
   function resize(){
     canvas.width = innerWidth * dpr;
@@ -1697,7 +2006,7 @@ var PROJECTS = [
       for (var y = GAP / 2; y < innerHeight; y += GAP){
         var d = Math.hypot(x - mouse.x, y - mouse.y);
         var t = Math.max(0, 1 - d / 180);
-        ctx.fillStyle = t > 0 ? 'rgba(63,208,255,' + (0.12 + t * 0.7) + ')' : 'rgba(120,140,170,0.12)';
+        ctx.fillStyle = t > 0 ? 'rgba(' + dotHi + ',' + (0.12 + t * 0.7) + ')' : dotBase;
         ctx.beginPath();
         ctx.arc(x, y, 1 + t * 1.4, 0, Math.PI * 2);
         ctx.fill();
