@@ -825,6 +825,28 @@
   .hike-card:hover{border-color:var(--accent); transform:translateY(-3px);}
   .hike-cta{display:inline-block; margin-top:14px; color:var(--accent); font-weight:600;}
   .hike-ridge{width:100%; height:90px; display:block;}
+  /* polaroids pinned on the ridge's peaks; --x / --y place each one on its peak */
+  .hike-visual{position:relative; height:200px; display:flex; align-items:flex-end;}
+  .hike-pin{
+    position:absolute; left:var(--x); bottom:calc(var(--y) + 12px); z-index:1;
+    width:68px; margin:0; padding:4px 4px 2px;
+    background:#fff; border-radius:4px;
+    box-shadow:0 8px 20px rgba(0,0,0,.35);
+    transform:translateX(-50%) rotate(var(--r));
+    transition:transform .35s cubic-bezier(.2,.8,.2,1);
+  }
+  .hike-pin.top{width:80px; z-index:2;}
+  .hike-pin img{width:100%; aspect-ratio:4/5; object-fit:cover; border-radius:2px;}
+  .hike-pin figcaption{font-family:var(--font-mono); font-size:9px; line-height:1.5; font-weight:700; color:#223; text-align:center;}
+  /* the stem and flag dot that plant the photo on its peak */
+  .hike-pin::after{
+    content:""; position:absolute; left:50%; top:100%;
+    width:2px; height:12px; margin-left:-1px;
+    background:var(--accent);
+  }
+  .hike-card:hover .hike-pin{transform:translateX(calc(-50% + var(--fan))) translateY(-6px) rotate(calc(var(--r) * .4));}
+  .hike-card:hover .hike-pin.top{transform:translateX(-50%) translateY(-6px) scale(1.06);}
+  @media (prefers-reduced-motion:reduce){ .hike-pin{transition:none;} }
 
   /* LEADERSHIP & CLUBS */
   .clubs{grid-column:1 / -1;}
@@ -1342,11 +1364,15 @@
           <p>9 hikes across Thailand and China, from Doi Khun Tan to Huangshan.</p>
           <span class="hike-cta">Walk the ridge →</span>
         </div>
+        <div class="hike-visual" aria-hidden="true">
+          <figure class="hike-pin" style="--x:17.3%; --y:43px; --r:-7deg; --fan:-14px;"><img src="images/hike-thumb-wulong.jpg" alt="" loading="lazy"><figcaption>1050 m</figcaption></figure>
+          <figure class="hike-pin top" style="--x:50%; --y:77px; --r:2deg; --fan:0px;"><img src="images/hike-thumb-huangshan.jpg" alt="" loading="lazy"><figcaption>1864 m</figcaption></figure>
+          <figure class="hike-pin" style="--x:82%; --y:45px; --r:7deg; --fan:14px;"><img src="images/hike-thumb-lom-muak.jpg" alt="" loading="lazy"><figcaption>274 m</figcaption></figure>
         <svg class="hike-ridge" viewBox="0 0 300 100" preserveAspectRatio="none" aria-hidden="true">
           <path d="M0 100 L0 78 L30 70 L52 52 L70 64 L96 40 L118 58 L150 14 L176 46 L198 34 L222 60 L246 50 L272 70 L300 66 L300 100 Z" fill="rgba(63,208,255,.10)"/>
           <path d="M0 78 L30 70 L52 52 L70 64 L96 40 L118 58 L150 14 L176 46 L198 34 L222 60 L246 50 L272 70 L300 66" fill="none" stroke="var(--accent)" stroke-width="1.5" vector-effect="non-scaling-stroke"/>
-          <circle cx="150" cy="14" r="3" fill="var(--accent)"/>
         </svg>
+        </div>
       </a>
     </div>
   </section>
