@@ -1016,6 +1016,7 @@
   [data-theme="light"] .theme-toggle .moon{display:none;}
   html.theme-anim, html.theme-anim *{transition:background-color .35s ease, border-color .35s ease, color .35s ease !important;}
 </style>
+<link rel="stylesheet" href="effect.css">
 <script>
   // apply the saved theme before the page paints (avoids a dark flash)
   try { if (localStorage.getItem('theme') === 'light') document.documentElement.setAttribute('data-theme', 'light'); } catch (e) {}
@@ -1312,7 +1313,7 @@
             <div class="club-body">
               <div class="club-top"><h4>SUTD Basketball</h4><span class="club-years">2026/27</span></div>
               <div class="club-role">Public Relations</div>
-              <p>Design the club's posters and shirts.</p>
+              <p>Design the club's posters and shirts. As part of the EXCO, we also organize a 3v3 women's basketball competition.</p>
               <a class="club-link" href="https://www.instagram.com/sutdbasketball/" target="_blank" rel="noopener noreferrer">Instagram →</a>
             </div>
           </li>
@@ -1389,8 +1390,8 @@
           1010274@mymail.sutd.edu.sg
         </a>
         <!-- Add your real GitHub / LinkedIn URLs below -->
-        <a href="#" target="_blank" rel="noopener noreferrer" class="btn">GitHub</a>
-        <a href="#" target="_blank" rel="noopener noreferrer" class="btn">LinkedIn</a>
+        <a href="https://github.com/Matthew06w" target="_blank" rel="noopener noreferrer" class="btn">GitHub</a>
+        <a href="https://www.linkedin.com/in/matthew-hema/" target="_blank" rel="noopener noreferrer" class="btn">LinkedIn</a>
       </div>
     </div>
   </section>
@@ -1492,7 +1493,7 @@ var PROJECTS = [
     date: '2026-08',
     title: 'DayCharge',
     subtitle: 'Solar-cell bicycle light',
-    type: 'Team project · Aug 2026',
+    type: 'Group project · Aug 2026',
     tags: ['Hardware'],
     images: [
       { src: 'images/Bicycle%20Light%201.png', label: 'Prototype' },
@@ -1505,7 +1506,7 @@ var PROJECTS = [
       'Everything lives inside a custom enclosure I designed and 3D-modeled in Onshape, precision-fit to the solar panel and engineered for secure handlebar mounting.'
     ],
     specs: [
-      ['Project type', 'Team project'],
+      ['Project type', 'Group project'],
       ['Goal', 'Self-charging bicycle light powered by a solar panel'],
       ['My role', 'Electronics integration and enclosure design'],
       ['Software', 'Onshape (CAD)'],
@@ -1517,7 +1518,7 @@ var PROJECTS = [
     date: '2025-01',
     title: 'Sign Language Translator',
     subtitle: 'Real-time gesture-to-Thai translation with LSTM',
-    type: 'Research Assistant, KMUTT · 2024–2025',
+    type: 'Research Intern, KMUTT · 2024–2025',
     tags: ['AI / CV', 'Research'],
     images: [
       { src: 'images/LSTM.gif', label: 'Live demo' },
@@ -1541,7 +1542,7 @@ var PROJECTS = [
     date: '2025-01',
     title: 'MRI Dementia Classification',
     subtitle: 'Custom CNN vs. VGG16 on brain MRI scans',
-    type: 'Research Assistant, KMUTT · 2024–2025',
+    type: 'Research Intern, KMUTT · 2024–2025',
     tags: ['AI / CV', 'Research'],
     images: [
       { src: 'images/BCC.png', label: 'Summary' },
@@ -1569,7 +1570,7 @@ var PROJECTS = [
     date: '2024-03',
     title: 'Low-Cost Ion Detector',
     subtitle: '2-in-1 apparatus for nitrate & phosphate detection in soil and water',
-    type: 'Team project · March 2024',
+    type: 'Group project · March 2024',
     tags: ['Hardware', 'Research'],
     badge: '2× Gold',
     // { youtube: '<video id>' } shows a YouTube video; it is listed first so it opens first
@@ -1598,7 +1599,7 @@ var PROJECTS = [
       text: 'Watch the video on YouTube'
     },
     specs: [
-      ['Project type', 'Team project'],
+      ['Project type', 'Group project'],
       ['Goal', 'Fast, low-cost nitrate and phosphate testing for agriculture and the environment'],
       ['My role', 'Lab data collection, regression / calibration curves and prototyping'],
       ['Techniques', 'Colorimetry, LED + RGB sensor absorbance measurement, calibration curves, automated reagent dosing']
@@ -1609,7 +1610,7 @@ var PROJECTS = [
     date: '2024-09',
     title: 'VERDIAN-02',
     subtitle: 'Vegetation Remote Detection and Integrated Agricultural Navigation',
-    type: 'Team project · Sep 2024',
+    type: 'Group project · Sep 2024',
     tags: ['Hardware'],
     badge: 'Winner',
     images: [
@@ -1625,7 +1626,7 @@ var PROJECTS = [
       'Our team entered the School Satellite competition and won, earning the chance to build a CubeSat with GISTDA (Thailand\'s space agency) over two weeks in a clean room.'
     ],
     specs: [
-      ['Project type', 'Team project, competition'],
+      ['Project type', 'Group project, competition'],
       ['Goal', 'Remote monitoring of crops and environmental conditions with a CubeSat'],
       ['My role', 'CubeSat design, pitching and presentation'],
       ['Result', 'Won the competition; built a CubeSat with GISTDA in a clean room (2 weeks)']
@@ -1637,7 +1638,7 @@ var PROJECTS = [
     date: '2026-08',
     title: 'Robotic Repositioning System',
     subtitle: 'For pressure-injury prevention',
-    type: 'Team project · Aug 2026',
+    type: 'Group project · Aug 2026',
     tags: ['Hardware'],
     // { embed: '<url>' } shows any embeddable page (here, Canva slides)
     images: [
@@ -1651,7 +1652,7 @@ var PROJECTS = [
       'Proposed to Chongqing University during the DGIS 2026 exchange programme.'
     ],
     specs: [
-      ['Project type', 'Team project, DGIS 2026 proposal'],
+      ['Project type', 'Group project, DGIS 2026 proposal'],
       ['Goal', 'Prevent pressure injuries by repositioning patients automatically'],
       ['Presented at', 'Chongqing University, China']
     ],
@@ -1689,7 +1690,7 @@ var PROJECTS = [
     date: '2025-09',
     title: 'Choosi',
     subtitle: 'AI app that helps you choose based on your own values',
-    type: 'Team project · Sep 2025',
+    type: 'Group project · Sep 2025',
     tags: ['Software'],
     images: [
       { src: 'images/choosi-1.jpg', label: 'Hackathon pitch' },
@@ -1701,7 +1702,7 @@ var PROJECTS = [
       'We didn\'t win a prize, but it was my first university project and great hands-on practice in building an app as a team.'
     ],
     specs: [
-      ['Project type', 'Team project, SEVEN MVP Hackathon'],
+      ['Project type', 'Group project, SEVEN MVP Hackathon'],
       ['Goal', 'Help users make everyday choices based on their personal values'],
       ['My role', 'UI design and coding']
     ]
@@ -1998,10 +1999,21 @@ var PROJECTS = [
   var dpr = Math.min(window.devicePixelRatio || 1, 2);
   var mouse = { x: -9999, y: -9999 };
   var GAP = 34;
-  var dotHi, dotBase;
+  /* slow rings that pass through the dots when the mouse moves */
+  var RING_SPEED  = 90;    // how fast a ring spreads, in px per second (lower = calmer)
+  var RING_WIDTH  = 50;    // how thick a ring is, in px
+  var RING_LIFE   = 3000;  // how long a ring lasts, in ms
+  var RING_GLOW   = 0.55;  // how bright dots get as a ring passes (0 = off)
+  var RING_EVERY  = 150;   // the mouse must travel this many px to start a new ring
+  var RING_MAX    = 4;     // most rings at once
+  var rings = [];
+  var ringFrame = 0;
+  var ringFrom = null;
+  var dotHi, dotRing, dotBase;
   function setDotColours(){
     var light = document.documentElement.getAttribute('data-theme') === 'light';
     dotHi = light ? '2,132,199' : '63,208,255';
+    dotRing = light ? '76,154,14' : '182,243,106';
     dotBase = light ? 'rgba(60,80,110,0.14)' : 'rgba(120,140,170,0.12)';
   }
   setDotColours();
@@ -2028,26 +2040,58 @@ var PROJECTS = [
   }
   function draw(){
     ctx.clearRect(0, 0, innerWidth, innerHeight);
+    var time = performance.now();
+    rings = rings.filter(function(r){ return time - r.start < RING_LIFE; });
     for (var x = GAP / 2; x < innerWidth; x += GAP){
       for (var y = GAP / 2; y < innerHeight; y += GAP){
         var d = Math.hypot(x - mouse.x, y - mouse.y);
         var t = Math.max(0, 1 - d / 180);
-        ctx.fillStyle = t > 0 ? 'rgba(' + dotHi + ',' + (0.12 + t * 0.7) + ')' : dotBase;
+        var w = 0;
+        for (var i = 0; i < rings.length; i++){
+          var age = time - rings[i].start;
+          var off = (Math.hypot(x - rings[i].x, y - rings[i].y) - age / 1000 * RING_SPEED) / RING_WIDTH;
+          // eases in and out, so nothing ever flashes
+          w += Math.exp(-off * off) * Math.min(1, age / 400) * (1 - age / RING_LIFE);
+        }
+        w = Math.min(1, w) * RING_GLOW;
+        if (t >= w && t > 0) ctx.fillStyle = 'rgba(' + dotHi + ',' + (0.12 + t * 0.7) + ')';
+        else if (w > 0.01) ctx.fillStyle = 'rgba(' + dotRing + ',' + (0.12 + w) + ')';
+        else ctx.fillStyle = dotBase;
         ctx.beginPath();
-        ctx.arc(x, y, 1 + t * 1.4, 0, Math.PI * 2);
+        ctx.arc(x, y, 1 + Math.max(t * 1.4, w * 1.6), 0, Math.PI * 2);
         ctx.fill();
       }
     }
   }
+  function ringTick(){
+    draw();
+    ringFrame = rings.length ? requestAnimationFrame(ringTick) : 0;
+  }
+  function addRing(x, y){
+    if (reduceMotion || !RING_GLOW) return;
+    rings.push({ x:x, y:y, start:performance.now() });
+    if (rings.length > RING_MAX) rings.shift();
+    if (!ringFrame) ringFrame = requestAnimationFrame(ringTick);
+  }
   var pending = false;
   window.addEventListener('mousemove', function(e){
     mouse.x = e.clientX; mouse.y = e.clientY;
-    if (!pending && !reduceMotion){ pending = true; requestAnimationFrame(function(){ pending = false; draw(); }); }
+    if (!ringFrom || Math.hypot(e.clientX - ringFrom.x, e.clientY - ringFrom.y) > RING_EVERY){
+      ringFrom = { x:e.clientX, y:e.clientY };
+      addRing(e.clientX, e.clientY);
+    }
+    if (!pending && !ringFrame && !reduceMotion){ pending = true; requestAnimationFrame(function(){ pending = false; draw(); }); }
+  }, {passive:true});
+  // phones have no mouse: a tap starts one ring
+  window.addEventListener('pointerdown', function(e){
+    if (e.pointerType !== 'mouse') addRing(e.clientX, e.clientY);
   }, {passive:true});
   window.addEventListener('resize', resize);
   resize();
 })();
 </script>
+<script src="effect.js" defer></script>
+<script src="cv-hover.js" defer></script>
 
 </body>
 </html>

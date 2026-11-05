@@ -1,0 +1,67 @@
+/* EDGE DIFFUSION — companion styles for effect.js (the strength values live there) */
+
+/* The canvas sits exactly over its image, under the labels */
+.fx-canvas{
+  position:absolute; inset:0;
+  width:100%; height:100%;
+  display:block;
+  pointer-events:none;
+  opacity:0;
+}
+.fx-src.fx-live + .fx-canvas{opacity:1;}
+
+/* The real <img> stays in the page for screen readers and search engines, just invisible */
+.fx-src.fx-live{opacity:0 !important;}
+
+/* Cards: copy the image's hover zoom, since the canvas is what people see */
+.card-media .fx-canvas{transition:transform .6s ease;}
+.card:hover .card-media .fx-canvas{transform:scale(1.06);}
+
+/* EDUBin tabs: only the selected tab's canvas shows */
+.featured-media .fx-canvas{transition:opacity .4s ease;}
+.featured-media .fx-src:not(.active) + .fx-canvas{opacity:0;}
+
+/* Detection box (cv-hover.js): four corner brackets drawn as background gradients */
+.cv-box{
+  --c:var(--lime);
+  --len:14px;
+  position:absolute; left:0; top:0; z-index:1;
+  display:block;
+  pointer-events:none;
+  opacity:0;
+  transition:opacity .2s ease;
+  filter:drop-shadow(0 0 3px rgba(0,0,0,.6));
+  background:
+    linear-gradient(var(--c), var(--c)) left top / var(--len) 2px,
+    linear-gradient(var(--c), var(--c)) left top / 2px var(--len),
+    linear-gradient(var(--c), var(--c)) right top / var(--len) 2px,
+    linear-gradient(var(--c), var(--c)) right top / 2px var(--len),
+    linear-gradient(var(--c), var(--c)) left bottom / var(--len) 2px,
+    linear-gradient(var(--c), var(--c)) left bottom / 2px var(--len),
+    linear-gradient(var(--c), var(--c)) right bottom / var(--len) 2px,
+    linear-gradient(var(--c), var(--c)) right bottom / 2px var(--len);
+  background-repeat:no-repeat;
+}
+.cv-box.on{opacity:1;}
+.cv-label{
+  position:absolute; left:0; bottom:calc(100% + 3px);
+  display:flex; gap:8px;
+  padding:1px 6px;
+  border-radius:3px;
+  background:var(--c);
+  color:#0B1404;
+  font-family:var(--font-mono); font-size:10.5px; font-weight:700; line-height:1.6;
+  white-space:nowrap;
+}
+.cv-box.flip .cv-label{left:auto; right:0;}
+[data-theme="light"] .cv-label{color:#fff;}
+.cv-name{max-width:130px; overflow:hidden; text-overflow:ellipsis;}
+.cv-coords{font-weight:400; opacity:.75;}
+
+/* Fallback: GIFs, reduced motion, or no WebGL get a simple fade at the image's top and bottom */
+.fx-static,
+.fx-fallback .card-media img,
+.fx-fallback .featured-media img.fm{
+  -webkit-mask-image:linear-gradient(to bottom, transparent, #000 10%, #000 90%, transparent);
+  mask-image:linear-gradient(to bottom, transparent, #000 10%, #000 90%, transparent);
+}
