@@ -18,7 +18,7 @@ var PROJECTS = [
     images: [
       { src: 'images/edu1.jpg', label: 'Poster' },
       { youtube: '2pwycMwPZ4w', label: 'Video' },
-      { src: 'images/edu2.jpg', label: 'Computer Vision' }
+      { src: 'images/edu3.png', label: 'Computer Vision' }
     ],
     pipeline: ['Camera', 'MobileNetV2', 'Rotate + tilt sort', 'Voice / LED feedback'],
     desc: [
