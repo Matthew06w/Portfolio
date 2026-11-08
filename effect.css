@@ -57,11 +57,3 @@
 [data-theme="light"] .cv-label{color:#fff;}
 .cv-name{max-width:130px; overflow:hidden; text-overflow:ellipsis;}
 .cv-coords{font-weight:400; opacity:.75;}
-
-/* Fallback: GIFs, reduced motion, or no WebGL get a simple fade at the image's top and bottom */
-.fx-static,
-.fx-fallback .card-media img,
-.fx-fallback .featured-media img.fm{
-  -webkit-mask-image:linear-gradient(to bottom, transparent, #000 10%, #000 90%, transparent);
-  mask-image:linear-gradient(to bottom, transparent, #000 10%, #000 90%, transparent);
-}

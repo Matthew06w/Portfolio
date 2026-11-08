@@ -13,12 +13,12 @@
   "use strict";
 
   /* ---- TWEAK THESE ---- */
-  var ZONE                = 0.22;  // size of the top/bottom effect zone, as a fraction of viewport height
-  var ZONE_X              = 0.05;  // same for the left/right sides, as a fraction of viewport width (0 = off)
+  var ZONE                = 0;     // size of the top/bottom effect zone, as a fraction of viewport height
+  var ZONE_X              = 0;     // same for the left/right sides, as a fraction of viewport width (0 = off)
   var STRETCH_STRENGTH    = 0.5;   // how far pixels are pulled, as a fraction of the zone
   var STRETCH_POWER       = 2.0;   // how tightly the smear hugs the edge; keep STRENGTH × POWER ≤ 1 or the image folds over itself
-  var DISPERSION_STRENGTH = 0.03;  // biggest red/blue split, as a fraction of viewport height (0 = no rainbow)
-  var FADE_STRENGTH       = 1.0;   // how fully it dissolves at the edge (0 = no fade, 1 = solid background colour)
+  var DISPERSION_STRENGTH = 0;     // biggest red/blue split, as a fraction of viewport height (0 = no rainbow)
+  var FADE_STRENGTH       = 0;     // how fully it dissolves at the edge (0 = no fade, 1 = solid background colour)
   var BACKGROUND_COLOR    = null;  // null follows the page's --bg (light and dark mode); or force one, e.g. '#FFFFFF'
   var SCROLL_EASE         = 0.12;  // how quickly the effect catches up with scrolling (lower = floatier, 1 = no easing)
   var MAX_LAG             = 0.04;  // the most the effect may trail behind scrolling, as a fraction of viewport height
