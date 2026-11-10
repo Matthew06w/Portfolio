@@ -8,7 +8,7 @@
 <meta name="description" content="Term by term at SUTD: class projects, competitions, basketball and music.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   :root{
     --bg:#07090D;
@@ -18,7 +18,7 @@
     --border-strong:#33405A;
     --text:#E8EDF5;
     --text-soft:#9AA6B8;
-    --text-faint:#5E6B7E;
+    --text-faint:#7E8BA0;
     --accent:#3FD0FF;
     --warm:#FFB547;
     --lime:#B6F36A;
@@ -26,7 +26,10 @@
     --lime-line:rgba(182,243,106,.35);
     --pill-bg:rgba(7,9,13,.6);
 
-    --font-head:'Space Grotesk', system-ui, sans-serif;
+    --font-head:'Chakra Petch', 'Space Grotesk', system-ui, sans-serif;
+    --font-body:'IBM Plex Sans', system-ui, sans-serif;
+    --r-sm:8px; --r-md:12px; --r-lg:16px; --r-xl:22px;
+    --ico-star:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.5L12 17.3l-5.9 3.2 1.3-6.5L2.5 9.4l6.6-.8z'/%3E%3C/svg%3E");
     --font-mono:'JetBrains Mono', ui-monospace, monospace;
   }
   :root[data-theme="light"]{
@@ -37,10 +40,10 @@
     --border-strong:#C4CEDA;
     --text:#0E141C;
     --text-soft:#4A5668;
-    --text-faint:#7A8698;
-    --accent:#0284C7;
-    --warm:#B86A00;
-    --lime:#4C9A0E;
+    --text-faint:#5B6779;
+    --accent:#0369A1;
+    --warm:#9A5800;
+    --lime:#3B790A;
     --lime-soft:rgba(76,154,14,.09);
     --lime-line:rgba(76,154,14,.35);
     --pill-bg:rgba(255,255,255,.85);
@@ -53,7 +56,7 @@
     margin:0;
     background:var(--bg);
     color:var(--text);
-    font-family:var(--font-head);
+    font-family:var(--font-body);
     line-height:1.6;
     overflow-x:hidden;
   }
@@ -102,7 +105,6 @@
 
   /* HERO */
   header{padding:120px 0 40px;}
-  .kicker{font-family:var(--font-mono); font-size:12.5px; color:var(--lime); letter-spacing:.1em;}
   h1{font-size:clamp(40px, 7vw, 76px); line-height:1; letter-spacing:-0.03em; margin:14px 0 16px;}
   .lede{color:var(--text-soft); max-width:58ch; margin:0;}
   .jump{display:flex; flex-wrap:wrap; gap:8px; margin-top:26px;}
@@ -138,7 +140,7 @@
   .item{
     border:1px solid var(--border);
     background:var(--surface);
-    border-radius:16px;
+    border-radius:var(--r-lg);
     padding:24px 26px;
     transition:border-color .3s;
   }
@@ -165,10 +167,10 @@
   /* photos: files that don't exist yet remove themselves, an empty strip hides */
   .photos{display:grid; grid-template-columns:repeat(auto-fill, minmax(120px, 1fr)); gap:8px; margin-top:16px;}
   .photos:empty{display:none;}
-  .clip{width:100%; max-height:480px; margin-top:16px; border-radius:12px; background:#000;}
+  .clip{width:100%; max-height:480px; margin-top:16px; border-radius:var(--r-md); background:#000;}
   .clip.yt{display:block; aspect-ratio:16/9; height:auto; border:0;}
   .photos button{
-    padding:0; border:0; border-radius:10px; overflow:hidden; cursor:zoom-in;
+    padding:0; border:0; border-radius:var(--r-sm); overflow:hidden; cursor:zoom-in;
     aspect-ratio:1/1; background:var(--bg-2);
   }
   .photos img{width:100%; height:100%; object-fit:cover; transition:transform .4s;}
@@ -177,7 +179,7 @@
   /* projects that live on the main page */
   .also{
     display:flex; flex-wrap:wrap; align-items:center; gap:8px;
-    padding:16px 20px; border:1px dashed var(--border-strong); border-radius:14px;
+    padding:16px 20px; border:1px dashed var(--border-strong); border-radius:var(--r-md);
   }
   .also span{font-family:var(--font-mono); font-size:12px; color:var(--text-faint); margin-right:4px;}
   .also a{
@@ -194,7 +196,6 @@
   .rail-fill{
     position:absolute; left:0; top:0; width:100%; height:100%;
     background:linear-gradient(180deg, var(--accent), var(--lime));
-    box-shadow:0 0 12px var(--lime);
     transform-origin:top;
     transform:scaleY(0);
   }
@@ -203,7 +204,7 @@
     width:12px; height:12px; margin:-6px 0 0 -6px;
     border-radius:50%;
     background:var(--lime);
-    box-shadow:0 0 16px 3px var(--lime);
+    box-shadow:0 0 0 4px var(--lime-soft);
   }
   #terms .term{position:relative;}
   /* each term's marker on the line */
@@ -216,7 +217,7 @@
     border:2px solid var(--border-strong);
     transition:background .4s ease, border-color .4s ease, box-shadow .4s ease;
   }
-  #terms .term.lit::before{background:var(--lime); border-color:var(--lime); box-shadow:0 0 14px var(--lime);}
+  #terms .term.lit::before{background:var(--lime); border-color:var(--lime); box-shadow:0 0 0 4px var(--lime-soft);}
   /* terms the line hasn't reached yet sit back a little */
   #terms.tl-on .term .term-label{opacity:.45; transition:opacity .5s ease;}
   #terms.tl-on .term.lit .term-label{opacity:1;}
@@ -237,7 +238,7 @@
   .gig{
     display:grid; grid-template-columns:110px 1fr; gap:16px; align-items:start;
     border:1px solid var(--border); background:var(--surface);
-    border-radius:14px; padding:16px 20px;
+    border-radius:var(--r-md); padding:16px 20px;
   }
   .gig .date{font-family:var(--font-mono); font-size:12px; color:var(--text-faint); padding-top:3px;}
   .gig h3{font-size:18px; margin:0;}
@@ -254,7 +255,7 @@
     padding:24px; cursor:zoom-out;
   }
   .lightbox.open{display:grid;}
-  .lightbox img{max-width:min(1100px, 100%); max-height:88vh; border-radius:12px; object-fit:contain;}
+  .lightbox img{max-width:min(1100px, 100%); max-height:88vh; border-radius:var(--r-md); object-fit:contain;}
 
   .reveal{opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .6s ease;}
   .reveal.in{opacity:1; transform:none;}
@@ -269,10 +270,29 @@
     .reveal{opacity:1; transform:none; transition:none;}
     .now::before{animation:none;}
   }
+
+  /* ---- shared polish (matches index.html) ---- */
+  h1, h2, h3, h4{font-family:var(--font-head); text-wrap:balance;}
+  a:focus-visible, button:focus-visible, [tabindex]:focus-visible{outline:2px solid var(--accent); outline-offset:3px;}
+  html{scrollbar-color:var(--border-strong) var(--bg); caret-color:var(--accent);}
+  a{text-underline-offset:.2em; text-decoration-thickness:1px;}
+  .award, .badge{display:inline-flex; align-items:center; gap:6px;}
+  .award::before, .badge::before, .awards li::before{
+    content:""; flex:none; width:12px; height:12px;
+    background:currentColor;
+    -webkit-mask:var(--ico-star) center / contain no-repeat; mask:var(--ico-star) center / contain no-repeat;
+  }
+  .awards li::before{background:var(--warm);}
 </style>
 <script>
   // apply the saved theme before the page paints (shared with index.html)
-  try { if (localStorage.getItem('theme') === 'light') document.documentElement.setAttribute('data-theme', 'light'); } catch (e) {}
+  (function(){
+    // saved choice wins, otherwise follow the device setting
+    var saved = null;
+    try { saved = localStorage.getItem('theme'); } catch (e) {}
+    var light = saved ? saved === 'light' : !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches);
+    if (light) document.documentElement.setAttribute('data-theme', 'light');
+  })();
 </script>
 </head>
 <body>
@@ -289,7 +309,6 @@
 
 <main class="wrap">
   <header>
-    <div class="kicker">// SUTD · 2025 — NOW</div>
     <h1>University Journey</h1>
     <p class="lede">
       Term by term at SUTD: the class projects, contests and builds that didn't make the main page,
@@ -431,7 +450,7 @@ var GIGS = [
   function item(it){
     return '<article class="item reveal">' +
       '<div class="item-top"><h3>' + esc(it.title) + '</h3><span class="date">' + esc(it.date) + '</span></div>' +
-      (it.award ? '<div class="award">★ ' + esc(it.award) + '</div>' : '') +
+      (it.award ? '<div class="award">' + esc(it.award) + '</div>' : '') +
       (it.text ? '<p>' + esc(it.text) + '</p>' : '') +
       (it.tags ? '<div class="tags">' + it.tags.map(function(t){ return '<span class="tag">' + esc(t) + '</span>'; }).join('') + '</div>' : '') +
       (it.link ? '<a class="item-link" href="' + esc(it.link.href) + '" target="_blank" rel="noopener noreferrer">' + esc(it.link.text) + '</a>' : '') +
@@ -461,13 +480,13 @@ var GIGS = [
 
   document.getElementById('life').innerHTML =
     '<div class="life-head reveal" id="basketball">' +
-      '<div class="kicker">// ON THE COURT</div><h2>Basketball</h2>' +
+      '<h2>Basketball</h2>' +
       '<p>Most weeks you\'ll find me on a court, for SUTD and in community tournaments around Singapore.</p>' +
     '</div>' +
     '<section class="term"><div class="term-label"><div class="n">2026</div><h2>Results</h2></div>' +
       '<div class="items">' + BASKETBALL.map(item).join('') + '</div></section>' +
     '<div class="life-head reveal" id="music">' +
-      '<div class="kicker">// ON STAGE</div><h2>Music</h2>' +
+      '<h2>Music</h2>' +
       '<p>I play guitar in band performances at SUTD and beyond.</p>' +
     '</div>' +
     '<section class="term"><div class="term-label"><div class="n">2025 — 2026</div><h2>Band shows</h2></div>' +

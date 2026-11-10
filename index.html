@@ -8,7 +8,7 @@
 <meta name="description" content="Mechanical engineering student building AI-integrated hardware: computer vision, electronics and CAD.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   :root{
     --bg:#07090D;
@@ -19,7 +19,7 @@
     --border-strong:#33405A;  
     --text:#E8EDF5;
     --text-soft:#9AA6B8;
-    --text-faint:#5E6B7E;
+    --text-faint:#7E8BA0;
     --accent:#3FD0FF;
     --accent-2:#7C6CFF;
     --accent-glow:rgba(63,208,255,0.35);
@@ -29,10 +29,25 @@
     --media-bg-2:#05070A;
     --glow-opacity:1;
 
-    --font-head:'Space Grotesk', system-ui, sans-serif;
+    /* headings: squared, HUD-style display face; body: Plex, built for engineering docs */
+    --font-head:'Chakra Petch', 'Space Grotesk', system-ui, sans-serif;
+    --font-body:'IBM Plex Sans', system-ui, sans-serif;
     --font-mono:'JetBrains Mono', ui-monospace, monospace;
 
-    --radius:16px;
+    /* corner scale: sm = small controls, md = inner panels, lg = cards, xl = big panels */
+    --r-sm:8px;
+    --r-md:12px;
+    --r-lg:16px;
+    --r-xl:22px;
+    --radius:var(--r-lg);
+
+    /* elevation: neutral, offset, soft */
+    --shadow-sm:0 2px 6px rgba(0,0,0,.35);
+    --shadow-md:0 12px 28px -8px rgba(0,0,0,.55);
+
+    /* drawn icons, painted with background-color through a mask */
+    --ico-star:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.5L12 17.3l-5.9 3.2 1.3-6.5L2.5 9.4l6.6-.8z'/%3E%3C/svg%3E");
+    --ico-play:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M8 5.2v13.6a.8.8 0 0 0 1.2.7l10.6-6.8a.8.8 0 0 0 0-1.4L9.2 4.5A.8.8 0 0 0 8 5.2z'/%3E%3C/svg%3E");
     --max:1160px;
   }
 
@@ -42,10 +57,30 @@
     margin:0;
     background:var(--bg);
     color:var(--text);
-    font-family:var(--font-head);
+    font-family:var(--font-body);
     font-size:16px;
     line-height:1.6;
     overflow-x:hidden;
+  }
+  h1, h2, h3, h4{font-family:var(--font-head); text-wrap:balance;}
+
+  /* browser surfaces, themed from the palette */
+  html{scrollbar-color:var(--border-strong) var(--bg); caret-color:var(--accent);}
+  a{text-underline-offset:.2em; text-decoration-thickness:1px;}
+  .stat .num, .edu-gpa .g, .result .r-num, .edu-years, .club-years, .filter .count{font-variant-numeric:tabular-nums;}
+
+  /* star / play marks drawn in front of award and video badges */
+  .chip.award, .featured-badge, .card-award, .card-video{display:inline-flex; align-items:center; gap:6px;}
+  .chip.award::before, .featured-badge::before, .card-award::before, .card-video::before{
+    content:""; flex:none; width:12px; height:12px;
+    background:currentColor;
+    -webkit-mask:var(--ico-star) center / contain no-repeat; mask:var(--ico-star) center / contain no-repeat;
+  }
+  .card-video::before{-webkit-mask-image:var(--ico-play); mask-image:var(--ico-play);}
+  /* one visible focus ring for every link and control when using the keyboard */
+  a:focus-visible, button:focus-visible, [tabindex]:focus-visible{
+    outline:2px solid var(--accent);
+    outline-offset:3px;
   }
   img{max-width:100%; display:block;}
   a{color:inherit;}
@@ -99,16 +134,14 @@
     border-radius:50%;
     object-fit:cover;
     border:1.5px solid var(--accent);
-    box-shadow:0 0 14px var(--accent-glow);
   }
   .logo-mark{
     width:30px; height:30px;
     border:1.5px solid var(--accent);
-    border-radius:8px;
+    border-radius:var(--r-sm);
     display:grid; place-items:center;
     color:var(--accent);
     font-size:12px;
-    box-shadow:0 0 18px var(--accent-glow);
   }
   .nav-links{display:flex; gap:6px;}
   .nav-links a{
@@ -158,11 +191,7 @@
     margin:22px 0 18px;
     font-weight:700;
   }
-  h1.hero-name .grad{
-    background:linear-gradient(100deg, var(--accent) 0%, var(--accent-2) 100%);
-    -webkit-background-clip:text; background-clip:text;
-    color:transparent;
-  }
+  h1.hero-name .grad{color:var(--accent);}
   .typed-line{
     font-family:var(--font-mono);
     font-size:clamp(15px, 2vw, 18px);
@@ -190,7 +219,7 @@
     font-weight:600;
     font-size:15px;
     padding:13px 22px;
-    border-radius:12px;
+    border-radius:var(--r-md);
     text-decoration:none;
     border:1px solid var(--border-strong);
     color:var(--text);
@@ -203,9 +232,9 @@
     background:var(--accent);
     color:#04121A;
     border-color:var(--accent);
-    box-shadow:0 8px 30px var(--accent-glow);
+    box-shadow:var(--shadow-sm);
   }
-  .btn.primary:hover{box-shadow:0 12px 40px var(--accent-glow);}
+  .btn.primary:hover{box-shadow:var(--shadow-md);}
 
   .stats{
     display:flex; gap:36px; flex-wrap:wrap;
@@ -220,11 +249,11 @@
   /* hero "camera feed" panel */
   .feed{
     position:relative;
-    border-radius:20px;
+    border-radius:var(--r-xl);
     border:1px solid var(--border-strong);
     background:var(--bg-2);
     padding:12px;
-    box-shadow:0 30px 80px rgba(0,0,0,.5), 0 0 0 1px rgba(63,208,255,.05);
+    box-shadow:0 30px 80px rgba(0,0,0,.5);
     transform:perspective(1200px) rotateY(-6deg) rotateX(3deg);
     transition:transform .4s ease;
   }
@@ -239,7 +268,7 @@
   .feed-screen{
     position:relative;
     aspect-ratio:4/3;
-    border-radius:12px;
+    border-radius:var(--r-md);
     overflow:hidden;
     background:#000;
   }
@@ -255,7 +284,7 @@
     position:absolute;
     border:2px solid var(--accent);
     border-radius:6px;
-    box-shadow:0 0 16px var(--accent-glow), inset 0 0 16px rgba(63,208,255,.15);
+    background:rgba(63,208,255,.06);
     transition:left .25s ease, top .25s ease, width .25s ease, height .25s ease;
     pointer-events:none;
   }
@@ -269,6 +298,33 @@
   .feed-bottom{
     display:flex; gap:8px; flex-wrap:wrap;
     padding:12px 4px 2px;
+  }
+  /* resume download — styled as the feed's "export" row */
+  .feed-resume{
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    margin:12px 0 0;
+    padding:12px 16px;
+    border-radius:var(--r-md);
+    border:1px solid var(--border-strong);
+    background:var(--surface);
+    color:var(--text);
+    text-decoration:none;
+    transition:border-color .2s, box-shadow .2s, background .2s;
+  }
+  .feed-resume-label{
+    display:flex; align-items:center; gap:10px;
+    font-family:var(--font-head); font-weight:600; font-size:15px;
+  }
+  .feed-resume-icon{color:var(--accent); transition:transform .2s;}
+  .feed-resume-meta{
+    font-family:var(--font-mono); font-size:11px; letter-spacing:.04em;
+    color:var(--text-faint);
+  }
+  .feed-resume:hover{border-color:var(--accent); box-shadow:var(--shadow-md);}
+  .feed-resume:hover .feed-resume-icon{transform:translateY(2px);}
+  @media (prefers-reduced-motion:reduce){
+    .feed-resume, .feed-resume-icon{transition:none;}
+    .feed-resume:hover .feed-resume-icon{transform:none;}
   }
   .chip{
     font-family:var(--font-mono);
@@ -285,12 +341,6 @@
   /* SECTIONS */
   section{padding:96px 0;}
   .sec-head{margin-bottom:44px;}
-  .sec-kicker{
-    font-family:var(--font-mono);
-    font-size:12.5px;
-    color:var(--accent);
-    letter-spacing:.08em;
-  }
   .sec-title{
     font-size:clamp(32px, 5vw, 50px);
     letter-spacing:-0.02em;
@@ -304,7 +354,7 @@
     display:grid;
     grid-template-columns:1.2fr 1fr;
     border:1px solid var(--border);
-    border-radius:24px;
+    border-radius:var(--r-xl);
     background:linear-gradient(140deg, var(--surface) 0%, var(--bg-2) 100%);
     overflow:hidden;
     position:relative;
@@ -312,7 +362,7 @@
   .featured::before{
     content:"";
     position:absolute; inset:0;
-    border-radius:24px;
+    border-radius:var(--r-xl);
     padding:1px;
     background:linear-gradient(130deg, rgba(63,208,255,.6), transparent 40%, transparent 60%, rgba(124,108,255,.5));
     -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
@@ -375,12 +425,12 @@
   .pipe-step{
     border:1px solid var(--border);
     background:var(--bg-2);
-    border-radius:12px;
+    border-radius:var(--r-md);
     padding:12px 10px;
     text-align:center;
     position:relative;
   }
-  .pipe-step .n{font-family:var(--font-mono); font-size:10.5px; color:var(--text-faint);}
+  .pipe-step .n{font-family:var(--font-mono); font-size:11px; color:var(--text-faint);}
   .pipe-step .t{font-size:13px; font-weight:600; margin-top:2px;}
   .pipe-step:not(:last-child)::after{
     content:"→";
@@ -429,8 +479,7 @@
   .card:hover, .card:focus-visible{
     transform:translateY(-6px);
     border-color:rgba(63,208,255,.5);
-    box-shadow:0 20px 50px rgba(0,0,0,.45), 0 0 30px rgba(63,208,255,.08);
-    outline:none;
+    box-shadow:0 20px 50px rgba(0,0,0,.45);
   }
   .card.hide{display:none;}
   .card-media{
@@ -471,7 +520,7 @@
     font-family:var(--font-mono); font-size:11px; font-weight:700;
     padding:4px 10px; border-radius:999px;
     color:#1A1203; background:var(--warm);
-    box-shadow:0 0 18px rgba(255,181,71,.35);
+    box-shadow:var(--shadow-sm);
   }
   .card-video{
     top:auto; bottom:12px; right:12px;
@@ -538,9 +587,9 @@
     overflow:auto;
     background:var(--bg-2);
     border:1px solid var(--border-strong);
-    border-radius:22px;
+    border-radius:var(--r-xl);
     box-shadow:0 40px 120px rgba(0,0,0,.6);
-    animation:pop .3s cubic-bezier(.2,.9,.3,1.2);
+    animation:pop .3s cubic-bezier(.16,1,.3,1);
   }
   @keyframes fade{from{opacity:0;}}
   @keyframes pop{from{opacity:0; transform:translateY(20px) scale(.97);}}
@@ -555,10 +604,10 @@
   }
   .modal-close:hover{border-color:var(--accent); color:var(--accent);}
   .modal-grid{display:grid; grid-template-columns:1.15fr 1fr;}
-  .modal-gallery{padding:16px; background:var(--media-bg); border-radius:22px 0 0 22px;}
+  .modal-gallery{padding:16px; background:var(--media-bg); border-radius:var(--r-xl) 0 0 var(--r-xl);}
   .modal-main{
     aspect-ratio:4/3;
-    border-radius:12px;
+    border-radius:var(--r-md);
     overflow:hidden;
     background:var(--media-bg-2);
   }
@@ -566,12 +615,13 @@
   .modal-main iframe{width:100%; height:100%; border:0; display:block;}
   .thumb{position:relative;}
   .thumb.is-video::after{
-    content:"▶";
+    content:"";
     position:absolute; inset:0;
-    display:grid; place-items:center;
-    color:#fff; font-size:16px;
-    background:rgba(0,0,0,.35);
+    background:#fff;
+    -webkit-mask:var(--ico-play) center / 18px no-repeat; mask:var(--ico-play) center / 18px no-repeat;
   }
+  .thumb.is-video::before{content:""; position:absolute; inset:0; z-index:1; background:rgba(0,0,0,.35);}
+  .thumb.is-video::after{z-index:2;}
   .results{
     display:grid; grid-template-columns:repeat(3, 1fr);
     gap:8px; margin:18px 0 0;
@@ -579,25 +629,25 @@
   .result{
     border:1px solid var(--border);
     background:var(--surface);
-    border-radius:12px;
+    border-radius:var(--r-md);
     padding:12px;
   }
   .result .r-num{font-size:22px; font-weight:700; color:var(--accent); line-height:1.1;}
-  .result .r-lbl{font-family:var(--font-mono); font-size:10.5px; color:var(--text-faint); margin-top:4px; line-height:1.4;}
+  .result .r-lbl{font-family:var(--font-mono); font-size:11px; color:var(--text-faint); margin-top:4px; line-height:1.4;}
   .awards{list-style:none; padding:0; margin:18px 0 0; display:grid; gap:8px;}
   .awards li{
     display:flex; gap:10px; align-items:flex-start;
     font-size:14px; color:var(--text);
     border:1px solid rgba(255,181,71,.25);
     background:rgba(255,181,71,.05);
-    border-radius:10px;
+    border-radius:var(--r-sm);
     padding:9px 12px;
   }
-  .awards li::before{content:"★"; color:var(--warm); flex:none;}
+  .awards li::before{content:""; flex:none; width:14px; height:14px; margin-top:4px; background:var(--warm); -webkit-mask:var(--ico-star) center / contain no-repeat; mask:var(--ico-star) center / contain no-repeat;}
   .modal-thumbs{display:flex; gap:8px; margin-top:10px; flex-wrap:wrap;}
   .thumb{
     width:84px; aspect-ratio:4/3;
-    border-radius:8px; overflow:hidden;
+    border-radius:var(--r-sm); overflow:hidden;
     border:2px solid transparent;
     padding:0; background:var(--media-bg-2);
     cursor:pointer; opacity:.55;
@@ -617,7 +667,7 @@
   .specs{
     margin:22px 0 0;
     border:1px solid var(--border);
-    border-radius:14px;
+    border-radius:var(--r-md);
     overflow:hidden;
   }
   .spec{
@@ -656,7 +706,7 @@
   /* logo panel fits both wide wordmarks and square emblems */
   .job-logo{
     position:relative;
-    height:110px; border-radius:14px;
+    height:110px; border-radius:var(--r-md);
     border:1px solid var(--border-strong);
     background:var(--bg);
     display:grid; place-items:center;
@@ -708,7 +758,7 @@
     width:16px; height:16px; border-radius:50%;
     background:var(--bg); border:2px solid var(--border-strong);
   }
-  .edu.current .edu-dot{border-color:var(--accent); background:var(--accent); box-shadow:0 0 0 5px rgba(63,208,255,.15), 0 0 18px var(--accent-glow);}
+  .edu.current .edu-dot{border-color:var(--accent); background:var(--accent); box-shadow:0 0 0 5px rgba(63,208,255,.15);}
   .edu-card{
     display:flex; justify-content:space-between; align-items:center; gap:24px;
     border:1px solid var(--border);
@@ -740,7 +790,7 @@
     margin:10px 0 0 28px;
     padding:16px 20px;
     border:1px dashed var(--border-strong);
-    border-radius:14px;
+    border-radius:var(--r-md);
     background:var(--bg-2);
     text-decoration:none; color:inherit;
     transition:border-color .3s, transform .3s;
@@ -762,12 +812,12 @@
     flex:none; text-align:center;
     border:1px solid var(--border-strong);
     background:var(--bg-2);
-    border-radius:14px;
+    border-radius:var(--r-md);
     padding:12px 18px;
     min-width:96px;
   }
   .edu-gpa .g{font-size:28px; font-weight:700; line-height:1; color:var(--text);}
-  .edu-gpa .l{font-family:var(--font-mono); font-size:10.5px; color:var(--text-faint); margin-top:6px; letter-spacing:.08em;}
+  .edu-gpa .l{font-family:var(--font-mono); font-size:11px; color:var(--text-faint); margin-top:6px; letter-spacing:.08em;}
   @media (max-width:640px){
     .edu-card{flex-direction:column; align-items:flex-start; padding:20px;}
     .edu-gpa{display:flex; align-items:baseline; gap:8px; padding:8px 14px; min-width:0;}
@@ -790,17 +840,8 @@
     transition:border-color .3s, transform .3s;
   }
   .skill-card:hover{border-color:var(--border-strong); transform:translateY(-3px);}
-  .skill-card::before{
-    content:"";
-    position:absolute; width:160px; height:160px;
-    right:-60px; top:-60px; border-radius:50%;
-    background:var(--accent);
-    filter:blur(60px); opacity:0;
-    transition:opacity .4s;
-  }
-  .skill-card:hover::before{opacity:.18;}
   .skill-icon{
-    width:44px; height:44px; border-radius:12px;
+    width:44px; height:44px; border-radius:var(--r-md);
     display:grid; place-items:center;
     background:rgba(63,208,255,.08);
     border:1px solid rgba(63,208,255,.25);
@@ -822,7 +863,6 @@
     border-radius:var(--radius);
     padding:28px;
   }
-  .hobby .h-tag{font-family:var(--font-mono); font-size:12px; color:var(--warm); letter-spacing:.06em;}
   .hobby h3{font-size:22px; margin:8px 0 10px;}
   .hobby p{color:var(--text-soft); margin:0;}
   /* sits beside the guitar card: text on top, ridge drawing below */
@@ -867,7 +907,7 @@
     display:flex; gap:16px; align-items:flex-start;
     border:1px solid var(--border);
     background:var(--bg-2);
-    border-radius:14px;
+    border-radius:var(--r-md);
     padding:18px;
     transition:border-color .3s;
   }
@@ -898,7 +938,7 @@
   .contact{
     text-align:center;
     border:1px solid var(--border);
-    border-radius:28px;
+    border-radius:var(--r-xl);
     padding:72px 24px;
     background:
       radial-gradient(600px 260px at 50% 0%, rgba(63,208,255,.14), transparent 70%),
@@ -925,7 +965,7 @@
     .featured-media{min-height:320px;}
     .featured-body{padding:28px;}
     .modal-grid{grid-template-columns:1fr;}
-    .modal-gallery{border-radius:22px 22px 0 0;}
+    .modal-gallery{border-radius:var(--r-xl) var(--r-xl) 0 0;}
     .about-grid{grid-template-columns:1fr;}
   }
   @media (max-width:640px){
@@ -959,14 +999,11 @@
   .featured::before{
     background:linear-gradient(130deg, rgba(63,208,255,.6), transparent 40%, transparent 60%, rgba(182,243,106,.55));
   }
-  .sec-kicker{color:var(--lime);}
   .stat .num span{color:var(--lime);}
   .filter.active{background:var(--lime); border-color:var(--lime); color:#0B1404;}
   .skill-icon{color:var(--lime); background:var(--lime-soft); border-color:var(--lime-line);}
-  .skill-card::before{background:var(--lime);}
   .featured-badge{color:var(--lime); border-color:var(--lime-line); background:var(--lime-soft);}
   .card:hover .card-arrow{background:var(--lime); border-color:var(--lime); color:#0B1404;}
-  .hobby .h-tag{color:var(--lime);}
   ::selection{background:var(--lime); color:#0B1404;}
   /* ===== end light green accent ===== */
 
@@ -980,11 +1017,11 @@
     --border-strong:#C4CEDA;
     --text:#0E141C;
     --text-soft:#4A5668;
-    --text-faint:#7A8698;
-    --accent:#0284C7;
+    --text-faint:#5B6779;
+    --accent:#0369A1;
     --accent-glow:rgba(2,132,199,0.22);
-    --warm:#B86A00;
-    --lime:#4C9A0E;
+    --warm:#9A5800;
+    --lime:#3B790A;
     --lime-soft:rgba(76,154,14,.09);
     --lime-line:rgba(76,154,14,.35);
     --nav-bg:rgba(245,247,250,0.75);
@@ -992,6 +1029,7 @@
     --media-bg-2:#F1F4F8;
     color-scheme:light;
   }
+  [data-theme="light"]{--shadow-sm:0 2px 6px rgba(15,30,50,.12); --shadow-md:0 12px 28px -8px rgba(15,30,50,.2);}
   [data-theme="light"] .glow{opacity:.12;}
   /* labels sitting on top of project images: light pill, dark text */
   [data-theme="light"] .card-type,
@@ -999,7 +1037,7 @@
   [data-theme="light"] .media-tab,
   [data-theme="light"] .modal-close{background:rgba(255,255,255,.88); color:var(--text); border-color:var(--border);}
   [data-theme="light"] .media-tab.active{color:#fff; background:var(--accent); border-color:var(--accent);}
-  [data-theme="light"] .card-award{color:#fff; box-shadow:0 2px 10px rgba(184,106,0,.3);}
+  [data-theme="light"] .card-award{color:#fff;}
   [data-theme="light"] .featured::before{
     background:linear-gradient(130deg, rgba(2,132,199,.55), transparent 40%, transparent 60%, rgba(76,154,14,.5));
   }
@@ -1007,6 +1045,11 @@
   [data-theme="light"] .card:focus-visible{box-shadow:0 18px 40px rgba(15,30,50,.12);}
   [data-theme="light"] .feed{box-shadow:0 30px 70px rgba(15,30,50,.15);}
   [data-theme="light"] .modal-panel{box-shadow:0 40px 100px rgba(15,30,50,.25);}
+  /* the darker light-mode accents need white text on top to stay readable */
+  [data-theme="light"] .btn.primary,
+  [data-theme="light"] .filter.active,
+  [data-theme="light"] .card:hover .card-arrow{color:#fff;}
+  [data-theme="light"] ::selection{color:#fff;}
   [data-theme="light"] .chip.award{border-color:rgba(184,106,0,.35); background:rgba(184,106,0,.07);}
 
   .theme-toggle{
@@ -1027,8 +1070,23 @@
 </style>
 <link rel="stylesheet" href="effect.css">
 <script>
-  // apply the saved theme before the page paints (avoids a dark flash)
-  try { if (localStorage.getItem('theme') === 'light') document.documentElement.setAttribute('data-theme', 'light'); } catch (e) {}
+  // apply the theme before the page paints (avoids a dark flash):
+  // the visitor's saved choice wins, otherwise follow their device setting
+  (function(){
+    var saved = null;
+    try { saved = localStorage.getItem('theme'); } catch (e) {}
+    var mq = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)');
+    function apply(light){
+      if (light) document.documentElement.setAttribute('data-theme', 'light');
+      else document.documentElement.removeAttribute('data-theme');
+    }
+    apply(saved ? saved === 'light' : !!(mq && mq.matches));
+    if (!saved && mq && mq.addEventListener) mq.addEventListener('change', function(e){
+      var now = null;
+      try { now = localStorage.getItem('theme'); } catch (err) {}
+      if (!now) apply(e.matches);
+    });
+  })();
 </script>
 </head>
 <body>
@@ -1102,13 +1160,19 @@
         <span class="chip">CAD</span>
         <span class="chip">Deep Learning</span>
       </div>
+      <a href="Matthew_Hema_Resume.pdf" class="feed-resume" download>
+        <span class="feed-resume-label">
+          <svg class="feed-resume-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v12M6 10l6 6 6-6M5 20h14"/></svg>
+          Download resume
+        </span>
+        <span class="feed-resume-meta">PDF · 313 KB</span>
+      </a>
     </div>
   </header>
 
   <!-- FEATURED + WORK -->
   <section id="projects">
     <div class="sec-head reveal">
-      <div class="sec-kicker">// 01 — SELECTED PROJECTS</div>
       <h2 class="sec-title">Things I've built</h2>
       <p class="sec-sub">From AI-powered recycling bins to solar bike lights. Click any project to see the full breakdown.</p>
     </div>
@@ -1124,7 +1188,6 @@
   <!-- EXPERIENCE -->
   <section id="experience">
     <div class="sec-head reveal">
-      <div class="sec-kicker">// 02 — EXPERIENCE</div>
       <h2 class="sec-title">Where I've worked</h2>
     </div>
 
@@ -1175,7 +1238,6 @@
   <!-- EDUCATION -->
   <section id="education">
     <div class="sec-head reveal">
-      <div class="sec-kicker">// 03 — EDUCATION</div>
       <h2 class="sec-title">Where I've studied</h2>
       <p class="sec-sub">Two science schools in Thailand, then engineering at SUTD in Singapore.</p>
     </div>
@@ -1190,7 +1252,7 @@
             <div class="edu-school">Singapore University of Technology and Design (SUTD)</div>
             <div class="edu-chips">
               <span class="chip accent">Major in Mechanical Engineering</span>
-              <span class="chip award">★ ASEAN Scholarship</span>
+              <span class="chip award">ASEAN Scholarship</span>
               <span class="chip">Singapore</span>
             </div>
           </div>
@@ -1219,7 +1281,7 @@
             <h3>High School Diploma</h3>
             <div class="edu-school">Mahidol Wittayanusorn School</div>
             <div class="edu-chips">
-              <span class="chip award">★ Full Scholarship</span>
+              <span class="chip award">Full Scholarship</span>
               <span class="chip">Thailand</span>
             </div>
           </div>
@@ -1234,7 +1296,7 @@
             <h3>Secondary School</h3>
             <div class="edu-school">Princess Chulabhorn Science High School</div>
             <div class="edu-chips">
-              <span class="chip award">★ Full Scholarship</span>
+              <span class="chip award">Full Scholarship</span>
               <span class="chip">Thailand</span>
             </div>
           </div>
@@ -1247,7 +1309,6 @@
   <!-- SKILLS -->
   <section id="skills">
     <div class="sec-head reveal">
-      <div class="sec-kicker">// 04 — TOOLBOX</div>
       <h2 class="sec-title">Skills &amp; tools</h2>
       <p class="sec-sub">The full stack from model training to soldering iron.</p>
     </div>
@@ -1309,14 +1370,12 @@
   <!-- ABOUT / HOBBIES -->
   <section id="about">
     <div class="sec-head reveal">
-      <div class="sec-kicker">// 05 — OUTSIDE THE BENCH</div>
       <h2 class="sec-title">When I'm not building</h2>
     </div>
     <div class="about-grid">
       <!-- LEADERSHIP & CLUBS — logos: put the file in images/ and set the <img> src;
            the initials show until the file exists -->
       <div class="hobby clubs reveal">
-        <div class="h-tag">LEADERSHIP &amp; CLUBS</div>
         <h3>Clubs I run and help run</h3>
         <ul class="club-list">
           <li class="club">
@@ -1359,7 +1418,6 @@
       </div>
       <a class="hobby hike-card reveal" href="journey.html#life">
         <div>
-          <div class="h-tag">CREATE &amp; COMPETE</div>
           <h3>Guitar &amp; basketball</h3>
           <p>
             I play guitar in band shows at SUTD and compete in basketball, from
@@ -1371,7 +1429,6 @@
       </a>
       <a class="hobby hike-card reveal" href="hiking.html">
         <div>
-          <div class="h-tag">EXPLORE</div>
           <h3>Hiking</h3>
           <p>9 hikes across Thailand and China, from Doi Khun Tan to Huangshan.</p>
           <span class="hike-cta">Walk the ridge →</span>
@@ -1392,7 +1449,6 @@
   <!-- CONTACT -->
   <section id="contact">
     <div class="contact reveal">
-      <div class="sec-kicker">// 06 — CONTACT</div>
       <h2>Let's build<br>something.</h2>
       <p>Open to internships, research and collaborations in computer vision, hardware and product design.</p>
       <div class="btn-row">
@@ -1484,7 +1540,7 @@
         }).join('') + '</div>' : '') +
       '</div>' +
       '<div class="featured-body">' +
-        '<span class="featured-badge">★ FEATURED PROJECT</span>' +
+        '<span class="featured-badge">FEATURED PROJECT</span>' +
         '<h3>' + esc(featured.title) + '</h3>' +
         '<div class="subtitle">' + esc(featured.subtitle) + '</div>' +
         '<p>' + esc(featured.desc[0]) + '</p>' +
@@ -1536,8 +1592,8 @@
     }
     return '<button class="card reveal' + (p.featured ? ' is-featured hide' : '') + '" data-open="' + p.id + '" data-tags="' + esc(p.tags.join('|')) + '">' +
       '<div class="card-media"><span class="card-type">' + esc(p.type) + '</span>' +
-        (p.badge ? '<span class="card-award">★ ' + esc(p.badge) + '</span>' : '') +
-        (p.images.some(function(m){ return m.youtube; }) ? '<span class="card-video">▶ Video</span>'
+        (p.badge ? '<span class="card-award">' + esc(p.badge) + '</span>' : '') +
+        (p.images.some(function(m){ return m.youtube; }) ? '<span class="card-video">Video</span>'
           : p.images.some(function(m){ return m.embed; }) ? '<span class="card-video">▣ Slides</span>' : '') +
         (coverSrc(p) ? '<img src="' + coverSrc(p) + '" alt="' + esc(p.title) + '" loading="lazy">'
           : p.images.some(function(m){ return m.embed; }) ? SLIDES_COVER : NO_MEDIA) + '</div>' +
