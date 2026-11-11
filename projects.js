@@ -203,6 +203,53 @@ var PROJECTS = [
     link: { href: 'https://www.canva.com/design/DAGdoitsXr4/win51pYGwE_PpIDshC8FaQ/view', text: 'Open slides in Canva' }
   },
   {
+    id: 'visioncap',
+    date: '2023-01',
+    title: 'VisionCap',
+    subtitle: 'Artificial vision for visually impaired people',
+    type: 'Project · 2023',
+    tags: ['Hardware'],
+    images: [
+      { src: 'images/vc1.jpg', label: 'Photo 1' },
+      { src: 'images/vc2.jpg', label: 'Photo 2' },
+      { src: 'images/vc3.jpg', label: 'Photo 3' }
+    ],
+    pipeline: ['Ultrasonic sensors', 'Microcontroller', 'Buzzer alert'],
+    desc: [
+      'A wearable cap that helps visually impaired people sense what is around them. Ultrasonic sensors on the cap measure the distance to nearby objects, and a buzzer warns the wearer when something is close.'
+    ],
+    specs: [
+      ['Goal', 'Help visually impaired people detect surrounding obstacles'],
+      ['My role', 'Prototyping and electronics'],
+      ['Techniques', 'Ultrasonic distance sensing, buzzer feedback']
+    ]
+  },
+  {
+    id: 'bemyeducation',
+    date: '2023-01',
+    title: 'BEMYEDUCATION',
+    subtitle: 'Education for all students',
+    type: 'Hackathon project · 2023',
+    tags: ['Software'],
+    badge: 'Winner',
+    images: [
+      { src: 'images/bme0.jpg', label: 'Photo 1' },
+      { youtube: 'mSWNHPNXyis', label: 'Video' },
+      { src: 'images/bme1.jpg', label: 'Photo 2' }
+    ],
+    desc: [
+      'A website built during the School Hackathon for students and teachers who need more study time. It helps them find learning resources by subject and grade level.',
+      'A reward system recognises students who stay dedicated to their studies. The project won the School Hackathon 2023.'
+    ],
+    awards: ['Winner, School Hackathon 2023'],
+    specs: [
+      ['Project type', 'Hackathon project'],
+      ['Result', 'Won the School Hackathon 2023'],
+      ['Goal', 'Make study resources easy to find for every student'],
+      ['Features', 'Resource search by subject and grade, student reward system']
+    ]
+  },
+  {
     id: 'pressure-injury',
     date: '2026-08',
     title: 'Robotic Repositioning System',
