@@ -427,11 +427,11 @@ var BASKETBALL = [
 ];
 
 var GIGS = [
-  { title: 'Camp Rock', venue: '@ SUTD', date: 'Oct 2025' },
-  { title: 'Spookaloo Halloween', venue: '@ SUTD', date: 'Nov 2025' },
-  { title: 'Springheads', venue: 'with my band Chopped @ SUTD Auditorium', date: '13 Feb 2026', photos: { id: 'springheads', n: 2 } },
-  { title: 'Songkran Festival', venue: '@ Royal Thai Embassy', date: 'Mar 2026' },
-  { title: 'Summerocks', venue: 'with my band 999 MB @ SUTD MPH', date: '17 Jul 2026', photos: { id: 'summerocks', n: 2 } }
+  { title: 'Camp Rock', venue: '@ SUTD', date: 'Oct 2025', youtube: 'pef6LiztQ8w' },
+  { title: 'Spookaloo Halloween', venue: '@ SUTD', date: 'Nov 2025', youtube: 'CDax3ZujyHE' },
+  { title: 'Springheads', venue: 'with my band Chopped @ SUTD Auditorium', date: 'Feb 2026', youtube: 'h3Ckihk4RxQ', photos: { id: 'springheads', n: 2 } },
+  { title: 'Songkran Festival', venue: '@ Royal Thai Embassy', date: 'Mar 2026', youtube: 'S6s_FNjsAAw' },
+  { title: 'Summerocks', venue: 'with my band 999 MB @ SUTD MPH', date: 'Jul 2026', youtube: '8SLzasbC_Vk', photos: { id: 'summerocks', n: 2 } }
 ];
 
 (function(){
@@ -447,6 +447,11 @@ var GIGS = [
     }
     return '<div class="photos">' + out + '</div>';
   }
+  function yt(id, title){
+    return '<iframe class="clip yt" src="https://www.youtube-nocookie.com/embed/' + esc(id) + '?rel=0" title="' + esc(title) + ' video" ' +
+      'allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe>';
+  }
+
   function item(it){
     return '<article class="item reveal">' +
       '<div class="item-top"><h3>' + esc(it.title) + '</h3><span class="date">' + esc(it.date) + '</span></div>' +
@@ -454,8 +459,7 @@ var GIGS = [
       (it.text ? '<p>' + esc(it.text) + '</p>' : '') +
       (it.tags ? '<div class="tags">' + it.tags.map(function(t){ return '<span class="tag">' + esc(t) + '</span>'; }).join('') + '</div>' : '') +
       (it.link ? '<a class="item-link" href="' + esc(it.link.href) + '" target="_blank" rel="noopener noreferrer">' + esc(it.link.text) + '</a>' : '') +
-      (it.youtube ? '<iframe class="clip yt" src="https://www.youtube-nocookie.com/embed/' + esc(it.youtube) + '?rel=0" title="' + esc(it.title) + ' video" ' +
-        'allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe>' : '') +
+      (it.youtube ? yt(it.youtube, it.title) : '') +
       (it.video ? '<video class="clip" src="' + esc(it.video) + '" controls preload="metadata" playsinline></video>' : '') +
       photos(it.photos) +
     '</article>';
@@ -492,7 +496,7 @@ var GIGS = [
     '<section class="term"><div class="term-label"><div class="n">2025 — 2026</div><h2>Band shows</h2></div>' +
       '<ul class="gigs">' + GIGS.map(function(g){
         return '<li class="gig reveal"><div class="date">' + esc(g.date) + '</div><div>' +
-          '<h3>' + esc(g.title) + '</h3><div class="venue">' + esc(g.venue) + '</div>' + photos(g.photos) +
+          '<h3>' + esc(g.title) + '</h3><div class="venue">' + esc(g.venue) + '</div>' + (g.youtube ? yt(g.youtube, g.title) : '') + photos(g.photos) +
         '</div></li>';
       }).join('') + '</ul></section>';
 
